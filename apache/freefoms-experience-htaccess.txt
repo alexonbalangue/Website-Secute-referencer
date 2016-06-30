@@ -1,0 +1,38 @@
+
+
+#Generator from Cpanel and edit that later using sinces 2009 years ago.
+<IfModule mod_rewrite.c>
+# anti-hotlinking add HTTP_REFERER for autorisate only
+	RewriteEngine on
+	RewriteCond %{HTTP_REFERER} !^$
+	#---------------if your are business online secure, because i get your logo website only (advice independant)---------------------------#
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?livingxworld.com [NC]
+	#---------------CDN---------------------------#
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?cloudflare.com [NC]
+	#--------------Blog----------------------------#
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?blogspot.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?tumblr.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?overblog.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?tumblr.com [NC]
+	#--------------Social networks----------------------------#
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?facebook.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?twitter.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?linkedin.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?viadeo.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?delicious.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?stumbledupon.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?pinterest.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?foursquare.com [NC]
+	#-----------------Radio online-------------------------#
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?tunein.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?shoutcast.com [NC]
+	#------------------search engine------------------------#
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?yandex.ru [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?yandex.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?yahoo.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?bing.com [NC]
+	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?baidu.com [NC]
+	RewriteCond %{HTTP_REFERER}  !search\?q=cache               [NC]
+	RewriteCond %{HTTP_REFERER}  !google\.                      
+	RewriteRule \.(gif|jpe?g?|png|bmp|avi|mp4|flv|pls|m3u|asx|xspf|qtl)$ https://www.exemple.tld/blocked.jpg [NC,R,L]
+</IfModule>

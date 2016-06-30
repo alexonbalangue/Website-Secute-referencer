@@ -43,7 +43,7 @@ Options -MultiViews
          Header unset X-Frame-Options
      </FilesMatch>
 	 
-# Content Security Policy (CSP) = recommended using CSP lvl 2: not yet sure the config
+# Content Security Policy (CSP) = recommended using CSP lvl 2 latest on april 2016: not yet sure the config
      Header set Content-Security-Policy "script-src 'self'; object-src 'self'"
      <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ico|jpe?g|js|json(ld)?|m4[av]|manifest|map|mp4|oex|og[agv]|opus|otf|pdf|png|rdf|rss|safariextz|svgz?|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xml|xpi)$">
          Header unset Content-Security-Policy
@@ -127,6 +127,7 @@ AddDefaultCharset utf-8
     AddType text/vnd.rim.location.xloc                  xloc
     AddType text/vtt                                    vtt
     AddType text/x-component                            htc
+	
 # Serve the following file types with the media type `charset` parameter set to `UTF-8`.
     AddCharset utf-8 .atom \
                      .bbaw \
