@@ -69,6 +69,7 @@ Options -MultiViews
 # Remove `ETags` as resources are sent with far-future expires headers.
     Header unset ETag
 </IfModule>
+#FileETag MTime Size #not recommended very not speed than FileETag None
 FileETag None
 # Server software information 
 ServerSignature Off
