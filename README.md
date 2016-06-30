@@ -18,4 +18,4 @@ for instant apache 2.4+ works but nginx i'm not yet apply works well the variabl
 
 Customer by Alexonbalangue.me stay 100% free for freedom! i reclying all and test, for what necessaries secure and ameliorate your SEO. proof!
 
-Just do [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/alexonbalangue)
+Just do [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/alexonbalangue), if you want you can, and i did my independance works public sharing for your website or business website seen until https://www.alexonbalangue.me/offline/r%C3%A9f%C3%A9rencement-s%C3%A9curiser-votre-site.html. 
