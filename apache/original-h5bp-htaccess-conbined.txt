@@ -66,9 +66,21 @@ Options -MultiViews
      Header merge Cache-Control "no-transform"
 #	ModPagespeedDisableRewriteOnNoTransform off "on|off"
 
+	<FilesMatch "\.(js|css|flv|ico|pdf|avi|mov|ppt|doc|mp3|wmv|wav|gif|jpg|jpeg|png|swf|webm)$">
+		Header append Cache-Control "public"
+	</FilesMatch>
+	<FilesMatch "\.(txt|html)$">
+		Header append Cache-Control "proxy-revalidate"
+	</FilesMatch>
+	<FilesMatch "\.(php|cgi|pl|htm|xml)$">
+		Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+		Header set Pragma "no-cache"
+	</FilesMatch>
+	
 # Remove `ETags` as resources are sent with far-future expires headers.
     Header unset ETag
 </IfModule>
+
 #FileETag MTime Size #not recommended very not speed than FileETag None
 FileETag None
 # Server software information 
@@ -262,6 +274,14 @@ AddDefaultCharset utf-8
     <IfModule mod_mime.c>
         AddEncoding gzip              svgz
     </IfModule>
+	#http://httpd.apache.org/docs/current/mod/mod_deflate.html - add | not sure
+	# Drop problematic browsers
+	#BrowserMatch ^Mozilla/4 gzip-only-text/html
+	#BrowserMatch ^Mozilla/4\.0[678] no-gzip
+	#BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+
+	# Make sure proxies don't deliver the wrong content
+	#Header append Vary User-Agent env=!dont-vary
 </IfModule>
 
 # Serve resources with far-future expires headers.
