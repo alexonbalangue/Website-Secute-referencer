@@ -1,5 +1,12 @@
+# block humans.txt scans
+<IfModule mod_rewrite.c>
+	RewriteCond %{QUERY_STRING} http\:\/\/www\.google\.com\/humans\.txt\? [NC]
+	RewriteRule .* - [F,L]
+</IfModule>
+
 # BLOCK PROXY VISITS
 # PerishablePress.com: http://bit.ly/12k6Uo
+https://wordpress.org/support/topic/whitelisting-ips-leads-to-403-errors-on-logout?replies=21
 <IfModule mod_rewrite.c>
  RewriteEngine on
  RewriteCond %{HTTP:VIA}                 !^$ [OR]
