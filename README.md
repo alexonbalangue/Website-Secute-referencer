@@ -14,7 +14,7 @@ for instant apache 2.4+ works but nginx i'm not yet apply works well the variabl
 
 - Apache (directory) = supported Apache v2.4.20/+ (PHP.ini), htaccess.
 -Nginx (directory) = not yet supported, not yet tested (not adapte with my competence)
--Web (directory) = Simplicity PHP7.0.7/+ (without installer than aesecure) only 'mod_rewrite'
+-Web (directory) = Simplicity PHP7.0.7/+ (without installer than aesecure) only with 'mod_rewrite'
 
 Customer by Alexonbalangue.me stay 100% free for freedom! i reclying all and test, for what necessaries secure and ameliorate your SEO. proof!
 
