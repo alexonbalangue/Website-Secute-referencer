@@ -1,6 +1,6 @@
 # BLOCK PROXY VISITS
 # PerishablePress.com: http://bit.ly/12k6Uo
-<ifModule mod_rewrite.c>
+<IfModule mod_rewrite.c>
  RewriteEngine on
  RewriteCond %{HTTP:VIA}                 !^$ [OR]
  RewriteCond %{HTTP:FORWARDED}           !^$ [OR]
@@ -9,9 +9,16 @@
  RewriteCond %{HTTP:PROXY_CONNECTION}    !^$ [OR]
  RewriteCond %{HTTP:XPROXY_CONNECTION}   !^$ [OR]
  RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
- RewriteCond %{HTTP:HTTP_CLIENT_IP}      !^$
- RewriteRule .* - [F]
-</ifModule>
+ RewriteCond %{HTTP:XROXY_CONNECTION}    !^$ [OR]
+ RewriteCond %{HTTP:X-FORWARDED-FOR}     !^$ [OR]
+ RewriteCond %{HTTP:HTTP_CLIENT_IP}      !^$ [OR]
+ RewriteCond %{HTTP:FORWARDED-FOR}       !^$ [OR]
+ RewriteCond %{HTTP:X-FORWARDED}         !^$
+ #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-01.domain.tld(.*)
+ #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-02.domain.tld(.*)
+ #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-03.domain.tld(.*)
+ RewriteRule ^(.*)$ - [F]
+</IfModule>
 
 # Customize what Apache returns to the client in case of an error. 
  ErrorDocument 403 /error/403.html
