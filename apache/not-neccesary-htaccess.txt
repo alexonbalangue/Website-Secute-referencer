@@ -1,0 +1,5 @@
+# block baidu bot
+<IfModule mod_rewrite.c>
+	RewriteCond %{HTTP_USER_AGENT} baidu [NC]
+	RewriteRule .* - [F,L]
+</IfModule>

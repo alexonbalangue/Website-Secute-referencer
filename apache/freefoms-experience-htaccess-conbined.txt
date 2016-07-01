@@ -6,7 +6,7 @@
 
 # BLOCK PROXY VISITS
 # PerishablePress.com: http://bit.ly/12k6Uo
-https://wordpress.org/support/topic/whitelisting-ips-leads-to-403-errors-on-logout?replies=21
+#https://wordpress.org/support/topic/whitelisting-ips-leads-to-403-errors-on-logout?replies=21
 <IfModule mod_rewrite.c>
 	 RewriteEngine on
 	 RewriteCond %{HTTP:VIA}                 !^$ [OR]
@@ -25,6 +25,7 @@ https://wordpress.org/support/topic/whitelisting-ips-leads-to-403-errors-on-logo
 	 #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-02.domain.tld(.*)
 	 #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-03.domain.tld(.*)
 	 RewriteRule ^(.*)$ - [F]
+	 
 	 #Wordpress wp-login.php - verrfy method apache 2.2
 	#<FilesMatch "^(wp-login\.php)">
 		#SetEnvIf X-FORWARDED-FOR "^xxx\.xxx\.xxx\.xxx$" allowedip
@@ -35,7 +36,7 @@ https://wordpress.org/support/topic/whitelisting-ips-leads-to-403-errors-on-logo
 		# Add your website/Server IP Address
 		#Allow from xxx.xxx.xxx.xxx
 	#	Allow from env=allowedip
-	</FilesMatch> 
+	#</FilesMatch> 
 </IfModule>
 
 # Customize what Apache returns to the client in case of an error. 
@@ -47,7 +48,7 @@ https://wordpress.org/support/topic/whitelisting-ips-leads-to-403-errors-on-logo
  ErrorDocument 502 /error/502.html
  ErrorDocument 504 /error/504.html
 
-#Generator from Cpanel and edit that later using sinces 2009 years ago.
+#Generator from Cpanel and edit that later using sinces 2009 years ago - and ameliorate.
 <IfModule mod_rewrite.c>
 # anti-hotlinking add HTTP_REFERER for autorisate only
 	RewriteEngine on

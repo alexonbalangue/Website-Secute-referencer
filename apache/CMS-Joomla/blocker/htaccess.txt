@@ -1,0 +1,26 @@
+# REWRITE RULE /URL PAGE
+#Options +FollowSymlinks #uncomment if your 're on the Web Hosting sharing
+
+RewriteEngine on
+#Error custom
+RewriteRule ^error/403\.html$ index.php?full=pages&error=403 [L]
+RewriteRule ^error/404\.html$ index.php?full=pages&error=404 [L]
+RewriteRule ^error/405\.html$ index.php?full=pages&error=405 [L]
+RewriteRule ^error/408\.html$ index.php?full=pages&error=408 [L]
+RewriteRule ^error/500\.html$ index.php?full=pages&error=500 [L]
+RewriteRule ^error/502\.html$ index.php?full=pages&error=502 [L]
+RewriteRule ^error/504\.html$ index.php?full=pages&error=504 [L]
+
+#Preventif security warning
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+#RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
+
