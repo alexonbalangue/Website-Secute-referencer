@@ -59,19 +59,19 @@ if(isset($_GET['full'])){
 		} else {
 			header("Location: http://$my_domainname");
 		}
-	} else if($_GET['full'] == 'hosting'){
+	}/** else if($_GET['full'] == 'hosting'){
 		if(isset($_GET['hacker'])){
-			if($_GET['hacker'] == '---'){
-				$title = $lang['---'];
-				$desc = $lang['---'];
+			if($_GET['hacker'] == 'exemple1'){
+				$title = $lang['3'];
+				$desc = $lang['4'];
 				include 'pages/header.php';
-				include 'pages/hacker/---.php';
+				#include 'pages/hacker/---.php';
 				include 'pages/footer.php';
-			} else if($_GET['hacker'] == '---'){
-				$title = $lang['---'];
-				$desc = $lang['---'];
+			} else if($_GET['hacker'] == 'sonn-available'){
+				$title = $lang['1'];
+				$desc = $lang['2'];
 				include 'pages/header.php';
-				include 'pages/hacker/---.php';
+				#include 'pages/hacker/---.php';
 				include 'pages/footer.php';
 			} else {
 				header("Location: http://$my_domainname");
@@ -79,7 +79,7 @@ if(isset($_GET['full'])){
 		} else {
 			header("Location: http://$my_domainname");
 		}
-	} else {
+	}**/ else {
 			header("Location: http://$my_domainname");
 		}
 }else{

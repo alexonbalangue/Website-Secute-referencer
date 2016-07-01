@@ -3,3 +3,21 @@
 	RewriteCond %{HTTP_USER_AGENT} baidu [NC]
 	RewriteRule .* - [F,L]
 </IfModule>
+# not neccessary - if you need
+#	ErrorDocument 400 blocker/error/400.html
+#	ErrorDocument 401 blocker/error/401.html
+#	ErrorDocument 403 blocker/error/403.html
+#	ErrorDocument 404 blocker/error/404.html
+#	ErrorDocument 405 blocker/error/405.html
+#	ErrorDocument 408 blocker/error/408.html
+#	ErrorDocument 410 blocker/error/410.html
+#	ErrorDocument 411 blocker/error/411.html
+#	ErrorDocument 412 blocker/error/412.html
+#	ErrorDocument 413 blocker/error/413.html
+#	ErrorDocument 414 blocker/error/414.html
+#	ErrorDocument 415 blocker/error/415.html
+#	ErrorDocument 500 blocker/error/500.html
+#	ErrorDocument 501 blocker/error/501.html
+#	ErrorDocument 502 blocker/error/502.html
+#	ErrorDocument 503 blocker/error/503.html
+#	ErrorDocument 506 blocker/error/506.html
