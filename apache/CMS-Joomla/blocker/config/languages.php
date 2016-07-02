@@ -3,7 +3,7 @@
 #Support only Option on PHP7, if using less PHP7 =< take out the option
 session_start([
     'cookie_lifetime' => 86400,
-    'read_and_close'  => true,
+    'read_and_close'  => true
 ]);
 #supportPHP5.6
 #session_start();
