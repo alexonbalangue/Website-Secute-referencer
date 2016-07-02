@@ -11,7 +11,19 @@ include_once 'config/template.php';
 if(isset($_GET['full'])){
 	if($_GET['full'] == 'pages'){
 		if(isset($_GET['error'])){
-			if($_GET['error'] == '403'){
+			if($_GET['error'] == '400'){
+				$title = $lang['error_400_title'];
+				$desc = $lang['error_400_desc'];
+				include 'pages/header.php';
+				include 'pages/error/400.php';
+				include 'pages/footer.php';
+			} else if($_GET['error'] == '401'){
+				$title = $lang['error_401_title'];
+				$desc = $lang['error_401_desc'];
+				include 'pages/header.php';
+				include 'pages/error/401.php';
+				include 'pages/footer.php';
+			} else if($_GET['error'] == '403'){
 				$title = $lang['error_403_title'];
 				$desc = $lang['error_403_desc'];
 				include 'pages/header.php';
@@ -35,6 +47,42 @@ if(isset($_GET['full'])){
 				include 'pages/header.php';
 				include 'pages/error/408.php';
 				include 'pages/footer.php';
+			} else if($_GET['error'] == '410'){
+				$title = $lang['error_410_title'];
+				$desc = $lang['error_410_desc'];
+				include 'pages/header.php';
+				include 'pages/error/410.php';
+				include 'pages/footer.php';
+			} else if($_GET['error'] == '411'){
+				$title = $lang['error_411_title'];
+				$desc = $lang['error_411_desc'];
+				include 'pages/header.php';
+				include 'pages/error/411.php';
+				include 'pages/footer.php';
+			} else if($_GET['error'] == '412'){
+				$title = $lang['error_412_title'];
+				$desc = $lang['error_412_desc'];
+				include 'pages/header.php';
+				include 'pages/error/412.php';
+				include 'pages/footer.php';
+			} else if($_GET['error'] == '413'){
+				$title = $lang['error_413_title'];
+				$desc = $lang['error_413_desc'];
+				include 'pages/header.php';
+				include 'pages/error/413.php';
+				include 'pages/footer.php';
+			} else if($_GET['error'] == '414'){
+				$title = $lang['error_414_title'];
+				$desc = $lang['error_414_desc'];
+				include 'pages/header.php';
+				include 'pages/error/415.php';
+				include 'pages/footer.php';
+			} else if($_GET['error'] == '415'){
+				$title = $lang['error_415_title'];
+				$desc = $lang['error_415_desc'];
+				include 'pages/header.php';
+				include 'pages/error/415.php';
+				include 'pages/footer.php';
 			} else if($_GET['error'] == '500'){
 				$title = $lang['error_500_title'];
 				$desc = $lang['error_500_desc'];
@@ -52,6 +100,12 @@ if(isset($_GET['full'])){
 				$desc = $lang['error_504_desc'];
 				include 'pages/header.php';
 				include 'pages/error/504.php';
+				include 'pages/footer.php';
+			} else if($_GET['error'] == '506'){
+				$title = $lang['error_506_title'];
+				$desc = $lang['error_506_desc'];
+				include 'pages/header.php';
+				include 'pages/error/506.php';
 				include 'pages/footer.php';
 			} else {
 				header("Location: http://$my_domainname");
