@@ -9,6 +9,38 @@
 ######################################################################################
 
 
+#BLOCK PROXY VISITS
+<IfModule mod_rewrite.c>
+	 RewriteEngine on
+	 RewriteCond %{HTTP:VIA}                 !^$ [OR]
+	 RewriteCond %{HTTP:FORWARDED}           !^$ [OR]
+	 RewriteCond %{HTTP:USERAGENT_VIA}       !^$ [OR]
+	 RewriteCond %{HTTP:X_FORWARDED_FOR}     !^$ [OR]
+	 RewriteCond %{HTTP:PROXY_CONNECTION}    !^$ [OR]
+	 RewriteCond %{HTTP:XPROXY_CONNECTION}   !^$ [OR]
+	 RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
+	 RewriteCond %{HTTP:XROXY_CONNECTION}    !^$ [OR]
+	 RewriteCond %{HTTP:X-FORWARDED-FOR}     !^$ [OR]
+	 RewriteCond %{HTTP:HTTP_CLIENT_IP}      !^$ [OR]
+	 RewriteCond %{HTTP:FORWARDED-FOR}       !^$ [OR]
+	 RewriteCond %{HTTP:X-FORWARDED}         !^$
+	 #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-01.domain.tld(.*)
+	 #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-02.domain.tld(.*)
+	 #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-03.domain.tld(.*)
+	 RewriteRule ^(.*)$ - [F]
+	 
+	 #Wordpress wp-login.php - verrfy method is apache 2.2
+	#<FilesMatch "^(wp-login\.php)">
+		#SetEnvIf X-FORWARDED-FOR "^xxx\.xxx\.xxx\.xxx$" allowedip
+	#	Order Allow,Deny
+	#	Allow from env=allowedip
+		# Add your website domain name
+		#Allow from example.com
+		# Add your website/Server IP Address
+		#Allow from xxx.xxx.xxx.xxx
+	#	Allow from env=allowedip
+	#</FilesMatch> 
+</IfModule>
 #Generator from Cpanel and edit that later using sinces 2009 years ago - and ameliorate.
 <IfModule mod_rewrite.c>
 # anti-hotlinking add HTTP_REFERER for autorisate only
@@ -44,10 +76,8 @@
 	RewriteCond %{HTTP_REFERER}  !search\?q=cache               [NC]
 	RewriteCond %{HTTP_REFERER}  !google\.                      
 	RewriteRule \.(gif|jpe?g?|png|bmp|avi|mp4|flv|pls|m3u|asx|xspf|qtl)$ https://www.exemple.tld/blocked.jpg [NC,R,L]
-</IfModule>
-# Customize what Apache returns to the client in case of an error. - if neccessary
-
-#RewriteEngine on
+	
+RewriteEngine on
 #Error custom - if neccessary
 RewriteRule ^error/400\.html$ blocker/index.php?full=pages&error=400 [L]
 RewriteRule ^error/401\.html$ blocker/index.php?full=pages&error=401 [L]
@@ -66,24 +96,27 @@ RewriteRule ^error/502\.html$ blocker/index.php?full=pages&error=502 [L]
 RewriteRule ^error/503\.html$ blocker/index.php?full=pages&error=503 [L]
 RewriteRule ^error/504\.html$ blocker/index.php?full=pages&error=504 [L]
 RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506 
+</IfModule>
+# Customize what Apache returns to the client in case of an error. - if neccessary
 
-#	ErrorDocument 400 blocker/error/400.html
-#	ErrorDocument 401 blocker/error/401.html
-#	ErrorDocument 403 blocker/error/403.html
-#	ErrorDocument 404 blocker/error/404.html
-#	ErrorDocument 405 blocker/error/405.html
-#	ErrorDocument 408 blocker/error/408.html
-#	ErrorDocument 410 blocker/error/410.html
-#	ErrorDocument 411 blocker/error/411.html
-#	ErrorDocument 412 blocker/error/412.html
-#	ErrorDocument 413 blocker/error/413.html
-#	ErrorDocument 414 blocker/error/414.html
-#	ErrorDocument 415 blocker/error/415.html
-#	ErrorDocument 500 blocker/error/500.html
-#	ErrorDocument 501 blocker/error/501.html
-#	ErrorDocument 502 blocker/error/502.html
-#	ErrorDocument 503 blocker/error/503.html
-#	ErrorDocument 506 blocker/error/506.html	
+
+	ErrorDocument 400 blocker/error/400.html
+	ErrorDocument 401 blocker/error/401.html
+	ErrorDocument 403 blocker/error/403.html
+	ErrorDocument 404 blocker/error/404.html
+	ErrorDocument 405 blocker/error/405.html
+	ErrorDocument 408 blocker/error/408.html
+	ErrorDocument 410 blocker/error/410.html
+	ErrorDocument 411 blocker/error/411.html
+	ErrorDocument 412 blocker/error/412.html
+	ErrorDocument 413 blocker/error/413.html
+	ErrorDocument 414 blocker/error/414.html
+	ErrorDocument 415 blocker/error/415.html
+	ErrorDocument 500 blocker/error/500.html
+	ErrorDocument 501 blocker/error/501.html
+	ErrorDocument 502 blocker/error/502.html
+	ErrorDocument 503 blocker/error/503.html
+	ErrorDocument 506 blocker/error/506.html	
 # Send the CORS header for images when browsers request it.
 <IfModule mod_setenvif.c>
     <IfModule mod_headers.c>
@@ -361,12 +394,12 @@ AddDefaultCharset utf-8
     </IfModule>
 	#http://httpd.apache.org/docs/current/mod/mod_deflate.html - add | not sure
 	# Drop problematic browsers
-	#BrowserMatch ^Mozilla/4 gzip-only-text/html
-	#BrowserMatch ^Mozilla/4\.0[678] no-gzip
-	#BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+	BrowserMatch ^Mozilla/4 gzip-only-text/html
+	BrowserMatch ^Mozilla/4\.0[678] no-gzip
+	BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
 
 	# Make sure proxies don't deliver the wrong content
-	#Header append Vary User-Agent env=!dont-vary
+	Header append Vary User-Agent env=!dont-vary
 </IfModule>
 
 # Serve resources with far-future expires headers.
