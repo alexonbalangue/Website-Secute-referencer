@@ -492,6 +492,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteCond %{REQUEST_URI} !^/index\.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule .* index.php [L]
 #
 ## End - Joomla! core SEF Section.

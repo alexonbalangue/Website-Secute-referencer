@@ -30,6 +30,9 @@ Options -MultiViews
     <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ico|jpe?g|js|json(ld)?|m4[av]|manifest|map|mp4|oex|og[agv]|opus|otf|pdf|png|rdf|rss|safariextz|svgz?|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xml|xpi)$">
         Header unset X-UA-Compatible
     </FilesMatch>
+	<IfModule mod_setenvif.c>
+		BrowserMatch MSIE ie
+	</IfModule>
 
 # Allow cookies to be set from iframes in Internet Explorer.
      Header set P3P "policyref=\"/w3c/p3p.xml\", CP=\"IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT\""
@@ -162,7 +165,7 @@ AddDefaultCharset utf-8
     # (1): Turn on the rewrite engine (this is necessary in order for the `RewriteRule` directives to work).
     RewriteEngine On
     # (2): Enable the `FollowSymLinks` option if it isn't already.
-    Options +FollowSymlinks
+    Options +FollowSymlinks #OR Options +FollowSymLinks -Indexes
     # (3): If your web host doesn't allow the `FollowSymlinks` option, you need to comment it out or remove it, and then uncomment the `Options +SymLinksIfOwnerMatch` line (4), but be aware of the performance impact.
     # Options +SymLinksIfOwnerMatch
     # (4): Some cloud hosting services will require you set `RewriteBase`.
@@ -274,14 +277,14 @@ AddDefaultCharset utf-8
     <IfModule mod_mime.c>
         AddEncoding gzip              svgz
     </IfModule>
-	#http://httpd.apache.org/docs/current/mod/mod_deflate.html - add | not sure
+	#http://httpd.apache.org/docs/current/mod/mod_deflate.html - add | work tested apache 2.4.20
 	# Drop problematic browsers
-	#BrowserMatch ^Mozilla/4 gzip-only-text/html
-	#BrowserMatch ^Mozilla/4\.0[678] no-gzip
-	#BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+	BrowserMatch ^Mozilla/4 gzip-only-text/html
+	BrowserMatch ^Mozilla/4\.0[678] no-gzip
+	BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
 
 	# Make sure proxies don't deliver the wrong content
-	#Header append Vary User-Agent env=!dont-vary
+	Header append Vary User-Agent env=!dont-vary
 </IfModule>
 
 # Serve resources with far-future expires headers.
