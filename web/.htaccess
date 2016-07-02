@@ -3,13 +3,23 @@
 
 RewriteEngine on
 #Error custom
+RewriteRule ^error/400\.html$ index.php?full=pages&error=400 [L]
+RewriteRule ^error/401\.html$ index.php?full=pages&error=401 [L]
 RewriteRule ^error/403\.html$ index.php?full=pages&error=403 [L]
 RewriteRule ^error/404\.html$ index.php?full=pages&error=404 [L]
 RewriteRule ^error/405\.html$ index.php?full=pages&error=405 [L]
 RewriteRule ^error/408\.html$ index.php?full=pages&error=408 [L]
+RewriteRule ^error/410\.html$ index.php?full=pages&error=410 [L]
+RewriteRule ^error/411\.html$ index.php?full=pages&error=411 [L]
+RewriteRule ^error/412\.html$ index.php?full=pages&error=412 [L]
+RewriteRule ^error/413\.html$ index.php?full=pages&error=413 [L]
+RewriteRule ^error/415\.html$ index.php?full=pages&error=415 [L]
 RewriteRule ^error/500\.html$ index.php?full=pages&error=500 [L]
+RewriteRule ^error/501\.html$ index.php?full=pages&error=501 [L]
 RewriteRule ^error/502\.html$ index.php?full=pages&error=502 [L]
+RewriteRule ^error/503\.html$ index.php?full=pages&error=503 [L]
 RewriteRule ^error/504\.html$ index.php?full=pages&error=504 [L]
+RewriteRule ^error/506\.html$ index.php?full=pages&error=506 
 
 #Preventif security warning
 #RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
