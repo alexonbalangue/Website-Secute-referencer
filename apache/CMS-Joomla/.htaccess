@@ -100,23 +100,23 @@ RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506
 # Customize what Apache returns to the client in case of an error. - if neccessary
 
 
-	ErrorDocument 400 blocker/error/400.html
-	ErrorDocument 401 blocker/error/401.html
-	ErrorDocument 403 blocker/error/403.html
-	ErrorDocument 404 blocker/error/404.html
-	ErrorDocument 405 blocker/error/405.html
-	ErrorDocument 408 blocker/error/408.html
-	ErrorDocument 410 blocker/error/410.html
-	ErrorDocument 411 blocker/error/411.html
-	ErrorDocument 412 blocker/error/412.html
-	ErrorDocument 413 blocker/error/413.html
-	ErrorDocument 414 blocker/error/414.html
-	ErrorDocument 415 blocker/error/415.html
-	ErrorDocument 500 blocker/error/500.html
-	ErrorDocument 501 blocker/error/501.html
-	ErrorDocument 502 blocker/error/502.html
-	ErrorDocument 503 blocker/error/503.html
-	ErrorDocument 506 blocker/error/506.html	
+	ErrorDocument 400 /error/400.html
+	ErrorDocument 401 /error/401.html
+	ErrorDocument 403 /error/403.html
+	ErrorDocument 404 /error/404.html
+	ErrorDocument 405 /error/405.html
+	ErrorDocument 408 /error/408.html
+	ErrorDocument 410 /error/410.html
+	ErrorDocument 411 /error/411.html
+	ErrorDocument 412 /error/412.html
+	ErrorDocument 413 /error/413.html
+	ErrorDocument 414 /error/414.html
+	ErrorDocument 415 /error/415.html
+	ErrorDocument 500 /error/500.html
+	ErrorDocument 501 /error/501.html
+	ErrorDocument 502 /error/502.html
+	ErrorDocument 503 /error/503.html
+	ErrorDocument 506 /error/506.html	
 # Send the CORS header for images when browsers request it.
 <IfModule mod_setenvif.c>
     <IfModule mod_headers.c>
