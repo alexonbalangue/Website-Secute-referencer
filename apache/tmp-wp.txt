@@ -1,0 +1,235 @@
+#############BEGIN - VERIFIFY ALL THAT - CUSTOMER ALEXON BALANGUE################
+# ------------------------------
+# --- Block files/folders
+
+<IfModule mod_rewrite.c>
+
+ RewriteEngine On
+
+ #AESECURE_BLOCKFILE_START
+#aeSecure 1.7
+# Block direct access to these files : don't allow an url like f.i. http://yoursite/configuration.php
+RewriteCond %{REQUEST_FILENAME} (boot.ini|changelog.php|changelog.txt|configuration.php|contributing.md|copyright.php|credits.php|htaccess.txt|httpd.conf|install.mysql)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (boot.ini|changelog.php|changelog.txt|configuration.php|contributing.md|copyright.php|credits.php|htaccess.txt|httpd.conf|install.mysql).*$ [NC,OR]
+RewriteCond %{REQUEST_FILENAME} (install.pgsql|install.txt|joomla.xml|license.php|license.txt|maintainers.php|maintainers.txt|php.ini|phpinfo.php|readme.htm)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (install.pgsql|install.txt|joomla.xml|license.php|license.txt|maintainers.php|maintainers.txt|php.ini|phpinfo.php|readme.htm).*$ [NC,OR]
+RewriteCond %{REQUEST_FILENAME} (readme.html|readme.txt|upgrade.php|upgrade.txt|web.config.txt|web.config|wp-config.php)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (readme.html|readme.txt|upgrade.php|upgrade.txt|web.config.txt|web.config|wp-config.php).*$
+RewriteCond %{SCRIPT_FILENAME} -f
+RewriteRule .* /warning/block-files.html [L]
+#AESECURE_BLOCKFILE_END
+
+ # Never direct access to these files or folder (aesecure)
+ # Block f.i. http://yoursite/.htaccess, http://yoursite/configuration.php, ...
+ RewriteCond %{REQUEST_FILENAME} .*\.(phtm?l?|ash?x|aspx?|cfml?|cgi|pl|jsp|sql)$ [NC,OR]
+ RewriteCond %{REQUEST_FILENAME} .*\.(bak|config|dll|exe|sql|ini|log|sh|inc|dist)$ [NC,OR]
+ RewriteCond %{REQUEST_FILENAME} .*\.(htaccess|htaccess_old|htpasswd)$ [NC]
+ RewriteCond %{SCRIPT_FILENAME} -f
+ RewriteRule .* /warning/block-files.html [L]
+
+ # ------------------------------
+ # --- Block fingerprint
+
+ # Block &tp=1 or &tmpl=offline ...
+ # Block f.i. http://yoursite/index.php?tmpl=offline
+ RewriteCond %{QUERY_STRING} (^|&)tmpl=(system|offline) [NC]
+ RewriteRule .* - [L]
+ RewriteCond %{QUERY_STRING} (^|&)tp= [NC]
+ RewriteRule .* - [F]
+
+ # ------------------------------
+ # --- Block specific querystring
+
+ # PHP Easter Eggs
+ # Block f.i. http://yoursite/index.php?=PHPE9568F34-D428-11d2-A769-00AA001ACF42 but not if 
+ # the request comes from the webserver himself (=allowed on localhost and serveur (since called by Joomla backend))
+ RewriteCond %{REMOTE_ADDR} !127.0.0.1
+ RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC]
+ RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?developper\.sites\.alexonbalangue\.me [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=758 [L]
+
+ # Block out any script trying to modify a _REQUEST / PHP GLOBAL variables via URL
+ # Block out any script trying to set a PHP GLOBALS variable via URL.
+ # Block f.i. http://yoursite/index.php?GLOBALS=SuperMe
+ RewriteCond %{QUERY_STRING} ((\?|&)GLOBALS(=|\[|\%[0-9A-Z]{0,2})?) [NC,OR]
+ RewriteCond %{QUERY_STRING} ((\?|&)_REQUEST(=|\[|\%[0-9A-Z]{0,2})?) [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=654 [L]
+
+ # Block out any script that includes a <script> tag in URL.
+ # Block f.i. http://yoursite/index.php?%3Cscript%3Ealert%28%27Msg%27%29;%3C/script%3E
+ # Block f.i. http://yoursite/index.php?%3Ctable%20background=%22javascript:alert(([code])%22%3E%3C/table%3E
+ RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+ RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+ RewriteCond %{QUERY_STRING} ((java)?script:).*(;).* [NC,OR]   
+ RewriteCond %{QUERY_STRING} .*(\&lt;script).* [NC] 
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=541 [L]
+
+ #xss blocage  For instance, a parameter on the querystring is an url (http://...)
+ RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
+ # Exception : the http:// parameter has been set by the website himself.  This is the case with WordPress, f.i. 
+ # because wp-admin makes a redirection to wp-login.  Allow the server IP and localhost
+ RewriteCond %{REMOTE_ADDR} !127.0.0.1
+ RewriteCond %{REMOTE_ADDR} !::1
+ RewriteCond %{QUERY_STRING} !option=com_akeeba&view=backup(.*)$ [NC]
+ RewriteCond %{QUERY_STRING} !(.*)https?(://|%3A%2F%2F)developper\.sites\.alexonbalangue\.me(.*)$ [NC]   
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(h|%68|%48)(t|%74|%54)(t|%74|%54)(p|%70|%50)(s|%73|%53)(%3A|:)(/|%2F){2}(.*)$ [NC,OR]
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(h|%68|%48)(t|%74|%54)(t|%74|%54)(p|%70|%50)(s|%73|%53)%3a(%3A|:)(/|%2F){2}(.*)$ [NC,OR]
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(h|%68|%48)(t|%74|%54)(t|%74|%54)(p|%70|%50)(%3A|:)(/|%2F){2}(.*)$ [NC,OR]
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(h|%68|%48)(t|%74|%54)(t|%74|%54)(p|%70|%50)%3a(%3A|:)(/|%2F){2}(.*)$ [NC,OR]
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(f|%66|%46)(t|%74|%54)(p|%70|%50)(%3A|:)(/|%2F){2}(.*)$ [NC,OR]
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(h|%68|%48)(t|%74|%54)%20(t|%74|%54)(p|%70|%50)(%3A|:)(/|%2F){2}(.*)$ [NC,OR]
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(h|%68|%48)(t|%74|%54)(t|%74|%54)%20(p|%70|%50)(%3A|:)(/|%2F){2}(.*)$ [NC,OR]
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(h|%68|%48)(t|%74|%54)(t|%74|%54)(p|%70|%50)%20(%3A|:)(/|%2F){2}(.*)$ [NC,OR]
+ RewriteCond %{QUERY_STRING} ^(.*)(%3D|=|%3A|%09)(.*)(h|%68|%48)%20(t|%74|%54)(t|%74|%54)(p|%70|%50)(%3A|:)(/|%2F){2}(.*)$ [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=782 [L]
+
+ # Block out any script trying to base64_encode data within the URL.
+ # Block f.i. http://yoursite/index.php?ImageName=base64_encode(%22I'm%20an%20hacker...%20Tadaaa%22)
+ RewriteCond %{QUERY_STRING} .*base64_(de|en)code.* [NC]
+ RewriteRule .* /warning/detected-base64-encode.html [L]
+
+ # Block querystring where "PHPSESSID" appears.
+ RewriteCond %{QUERY_STRING} ^.*PHPSESSID.*$ [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=310 [L]
+
+ # Redirect tentative to use the com_users standard component of Joomla and
+ # redirect to Community Builder
+ #RewriteCond %{QUERY_STRING} option=com_users&view=login [NC]
+ #RewriteRule .* index.php?option=com_comprofiler&task=login [L]
+
+ # Prevent use of specified methods in HTTP Request,  but allow opensiteexplorer.org to do so
+ # http://bodvoc.com/index.php?option=com_content&view=article&id=43&catid=2&Itemid=3; see rule #1
+ RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK) [NC]
+ RewriteCond %{HTTP_REFERER} !(www\.)?opensiteexplorer\.org/ [NC]
+ RewriteCond %{HTTP_REFERER} !(www\.)?uptimerobot\.com/ [NC]
+ RewriteCond %{HTTP_REFERER} !http://validator\.w3\.org/ [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=651 [L]
+
+ # Block out use of illegal or unsafe characters in the HTTP Request
+ # Block urls having a carriage return or linefeed in it
+ # Block also urls having "wwwroot" or "public_html" in it.  Can be an hacker trying to access to a localfile
+ # Block urls having "alert(", "char(", "eval(", "function(" ... 
+ RewriteCond %{QUERY_STRING} .*((alert|char|eval|function|load_file)\().* [NC,OR]
+ RewriteCond %{QUERY_STRING} .*(\_vti\_|crossdomain|wwwroot|public_html).* [NC,OR]
+ RewriteCond %{QUERY_STRING} .*(\\r|\\n|%0A|%0D).* [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=429 [L]
+
+ # No carriage return, line feed, escape (%27), ... in the query string
+ # Block f.i. http://yoursite/index.php?value=%27
+ RewriteCond %{QUERY_STRING} ^.*(<|>|'|%0A|%0D|%25|%27|%3C|%3E|%00).* [NC,OR]
+ RewriteCond %{QUERY_STRING} ^.*((\/\*)?\*\/).* [NC,OR]
+ RewriteCond %{QUERY_STRING} ^.*\|\|.* [NC]
+ RewriteCond %{QUERY_STRING} !option=com_akeeba(.*)$ [NC]   # exception for Akeeba backup
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=271 [L]
+
+ # Block SQL injection tentatives
+ # Block f.i. http://yoursite/index.php?%3CDROP%20TABLE%20jos_users%3E
+ RewriteCond %{QUERY_STRING} ^.*(;|<|>|'|"|\)|%0A|%0D|%22|%25|%27|%3C|%3E|%00).*(/\*|union|select|insert|cast|declare|drop|update|md5|benchmark).* [NC,OR]
+ RewriteCond %{QUERY_STRING} ^.*(%20)?([(])?(union|select|insert|cast|declare|group_concat|drop|update|md5|benchmark)%20.* [NC,OR] 
+ RewriteCond %{QUERY_STRING} ^.*(%20|\+)(AND|OR)(%20|\+).* [NC,OR] 
+ RewriteCond %{QUERY_STRING} ^.*(%20|\+)ORDER(%20|\+).* [NC,OR] 
+ RewriteCond %{QUERY_STRING} ^.*%201\=1.* [NC] 
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=682 [L]
+ # Block urls trying to get access to the jos_ defaut prefix of Joomla 1.5
+ RewriteCond %{QUERY_STRING} .*jos_.*  [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=682 [L]
+
+ #Block functions in the querystring (f.i. String.fromCharCode)
+ RewriteCond %{QUERY_STRING} ^.*string\.fromcharcode.* [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=352 [L]
+
+ # Filter against shell attacks
+ # Block f.i. http://yoursite/index.php?cmd=chmod or http://yoursite/index.php?act=tools&d=54
+ # http://yoursite/index.php?page=../../../../proc/self/environ or http://yoursite/index.php?cmd=../../etc/passwd
+
+ RewriteCond %{REQUEST_URI} .*((php|my)?shell|remview.*|phpremoteview.*|sshphp.*|pcom|nstview.*|c99|r57|webadmin.*|phpget.*|phpwriter.*|fileditor.*|locus7.*|storm7.*)\.(p?s?x?htm?l?|txt|aspx?|cfml?|cgi|pl|php[3-9]{0,1}|jsp?|sql|xml) [NC,OR]
+ RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
+ RewriteCond %{QUERY_STRING} ^(.*)([-_a-z]{1,15})=(chmod|chdir|mkdir|rmdir|clear|whoami|uname|unzip|gunzip|grep|umask|telnet|ssh|ftp|mkmode|logname|edit_file|search_text|find_text|php_eval|download_file|ftp_file_down|ftp_file_up|ftp_brute|mail_file|mysql_dump|db_query)([^a-zA-Z0-9].+)*$ [OR]
+ RewriteCond %{QUERY_STRING} ^work_dir=.*$ [OR]
+ RewriteCond %{QUERY_STRING} ^command=.*&output.*$ [OR]
+ RewriteCond %{QUERY_STRING} ^nts_[a-z0-9_]{0,10}=.*$ [OR]
+ RewriteCond %{QUERY_STRING} ^c=(t|setup|codes)$ [OR]
+ RewriteCond %{QUERY_STRING} ^act=((about|cmd|selfremove|chbd|trojan|backc|massbrowsersploit|exploits|grablogins|upload.*)|((chmod|f)&f=.*))$ [OR]
+ RewriteCond %{QUERY_STRING} ^act=(ls|search|fsbuff|encoder|tools|processes|ftpquickbrute|security|sql|eval|update|feedback|cmd|gofile|mkfile)&d=.*$ [OR]
+ RewriteCond %{QUERY_STRING} ^&?c=(l?v?i?&d=|v&fnot=|setup&ref=|l&r=|d&d=|tree&d|t&d=|e&d=|i&d=|codes|md5crack).*$ [OR]
+ RewriteCond %{QUERY_STRING} ^(.*)*etc(/|%2F)passwd* [OR]
+ # Windows slashes \..
+ RewriteCond %{QUERY_STRING} .*(((\\|%5C)\.\.\\)+).* [OR]
+ # Unix slashes /..
+ RewriteCond %{QUERY_STRING} .*(((\/|%2F)\.\.)+).* [OR]
+ RewriteCond %{QUERY_STRING} ^(.*)*proc\/self\/environ* [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=490 [L]
+</IfModule>
+
+#AESECURE_BLOCKHIDDENFOLDERS_START
+#aesecure 2.6
+# Block access to hidden files and directories.
+# This includes directories used by version control systems such as Git and SVN.
+<IfModule mod_rewrite.c>
+ RewriteCond %{SCRIPT_FILENAME} -d [OR]
+ RewriteCond %{SCRIPT_FILENAME} -f
+ RewriteRule "(^|/)\." /joomla/aesecure/accessdenied.php?s=26 [L]
+</IfModule>
+#AESECURE_BLOCKHIDDENFOLDERS_END
+#AESECURE_BLOCK_COM_USERS_START
+#aeSecure 4.2
+<IfModule mod_rewrite.c>
+ RewriteEngine On
+ # Don't allow access to the registration native url.  This url is used by robots to create ghosts users
+ # Block f.i. http://yoursite/index.php?option=com_users&view=registration
+ RewriteCond %{QUERY_STRING} option=com_users&view=registration [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=42 [L]
+</IfModule>
+#AESECURE_BLOCK_COM_USERS_END
+#AESECURE_BADBOTS_START
+#aeSecure 2.3
+# ------------------------------
+# --- Block bad bots and spam
+
+# Block website "aspirator" and well known bad bots.  This list is NOT exhaustive.
+<IfModule mod_setenvif.c>
+ SetEnvIfNoCase ^User-Agent$ .*(aesop_com_spiderman|ahrefsbot|alexibot|backweb|bandit|batchftp|bigfoot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(black.?hole|blackwidow|blowfish|botalot|buddy|builtbottough|bullseye).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(cheesebot|cherrypicker|chinaclaw|collector|copier|copyrightcheck).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(cosmos|crescent|curl|custo|da|diibot|disco|dittospyder|dragonfly).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(drip|easydl|ebingbong|ecatch|eirgrabber|emailcollector|emailsiphon).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(emailwolf|erocrawler|exabot|eyenetie|filehound|flashget|flunky).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(frontpage|getright|getweb|go.?zilla|go-ahead-got-it|gotit|grabnet).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(grafula|harvest|hloader|hmview|httplib|httrack|humanlinks|ilsebot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(infonavirobot|infotekies|intelliseek|interget|iria|jennybot|jetcar).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(joc|justview|jyxobot|kenjin|keyword|larbin|leechftp|lexibot|lftp|libweb).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(likse|linkscan|linkwalker|lnspiderguy|lwp|magnet|mag-net|markwatch).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(mata.?hari|memo|microsoft.?url|midown.?tool|miixpc|mirror|missigua).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(mister.?pix|mj12bot|moget|mozilla.?newt|nameprotect|navroad|backdoorbot|nearsite).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(net.?vampire|netants|netcraft|netmechanic|netspider|nextgensearchbot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(attach|nicerspro|nimblecrawler|npbot|octopus|offline.?explorer).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(offline.?navigator|openfind|outfoxbot|pagegrabber|papa|pavuk).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(pcbrowser|php.?version.?tracker|pockey|propowerbot|prowebwalker).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(psbot|pump|queryn|recorder|realdownload|reaper|reget|rogerbot|true_robot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(repomonkey|rma|internetseer|sitesnagger|siphon|slysearch|smartdownload).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(snake|snapbot|snoopy|sogou|spacebison|spankbot|spanner|sqworm|superbot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(superhttp|surfbot|asterias|suzuran|szukacz|takeout|teleport).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(telesoft|the.?intraformant|thenomad|tighttwatbot|titan|urldispatcher).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(turingos|turnitinbot|urly.?warning|vacuum|vci|voideye|whacker).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(widow|wisenutbot|wwwoffle|xaldon|zeus|zyborg|anonymouse).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*web(zip|emaile|enhancer|fetch|go.?is|auto|bandit|clip|copier|master|reaper|sauger|site.?quester|whack).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(craftbot|download|extract|stripper|sucker|ninja|clshttp|webspider|leacher|collector|grabber|webpictures).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(libwww-perl|aesop_com_spidermano).* HTTP_SAFE_BADBOT
+ # Don't redirect to the access denied page since the user agent can't definitly access to our pages
+ Order Deny,Allow
+ Allow from All
+ Deny from env=HTTP_SAFE_BADBOT
+</IfModule>
+
+<IfModule mod_rewrite.c>
+ RewriteEngine On
+ # Antispam (just populate the list of other keywords)
+ # Block f.i. http://yoursite/index.php?postmsg=ejaculation i.e. any querystring that contains one "blacklisted" word
+ RewriteCond %{QUERY_STRING} \b(ambien|blue\spill|cialis|cocaine|ejaculation|erectile)\b [NC,OR]
+ RewriteCond %{QUERY_STRING} \b(erections|hoodia|huronriveracres|impotence|levitra|libido)\b [NC,OR]
+ RewriteCond %{QUERY_STRING} \b(lipitor|phentermin|pro[sz]ac|sandyauer|tramadol|troyhamby)\b [NC,OR]
+ RewriteCond %{QUERY_STRING} \b(ultram|unicauca|valium|viagra|vicodin|vuiton|xanax|ypxaieo)\b [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=23 [L]
+</IfModule>
+
+#############END - VERIFIFY ALL THAT - CUSTOMER ALEXON BALANGUE################
