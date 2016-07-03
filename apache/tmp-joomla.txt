@@ -154,11 +154,12 @@ RewriteRule .* /warning/block-files.html [L]
 #aesecure 2.6
 # Block access to hidden files and directories.
 # This includes directories used by version control systems such as Git and SVN.
-<IfModule mod_rewrite.c>
- RewriteCond %{SCRIPT_FILENAME} -d [OR]
- RewriteCond %{SCRIPT_FILENAME} -f
- RewriteRule "(^|/)\." /joomla/aesecure/accessdenied.php?s=26 [L]
-</IfModule>
+# not need had already with h5bp
+#<IfModule mod_rewrite.c>
+# RewriteCond %{SCRIPT_FILENAME} -d [OR]
+# RewriteCond %{SCRIPT_FILENAME} -f
+# RewriteRule "(^|/)\." /joomla/aesecure/accessdenied.php?s=26 [L]
+#</IfModule>
 #AESECURE_BLOCKHIDDENFOLDERS_END
 #AESECURE_BLOCK_COM_USERS_START
 #aeSecure 4.2
