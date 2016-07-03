@@ -38,6 +38,34 @@ $lang['error_503_desc'] = 'The server is temporarily unable to service your requ
 $lang['error_504_title'] = '504 GATEWAY TIMEOUT'; 
 $lang['error_504_desc'] = 'The upstream server failed to send a request in the time allowed by the server.'; 
 $lang['error_506_title'] = '506 Variant also varies!'; 
-$lang['error_506_desc'] = 'A variant for the requested entity is itself a negotiable resource. Access not possible.'; 
+$lang['error_506_desc'] = 'A variant for the requested entity is itself a negotiable resource. Access not possible.';
+
+
+
+$lang['hacker_blockfile'] = ''; 
+$lang['hacker_blockfile'] = ''; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ?>

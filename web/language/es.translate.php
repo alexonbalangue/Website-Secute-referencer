@@ -39,4 +39,32 @@ $lang['error_504_desc'] = 'The upstream server failed to send a request in the t
 $lang['error_506_title'] = '506 La variante tambi&eacute;n varia!'; 
 $lang['error_506_desc'] = 'Una variante de la entidad solicitada es por si misma un recurso negociable. No es posible tener acceso a la entidad.'; 
 
+
+
+$lang['hacker_blockfile'] = ''; 
+$lang['hacker_blockfile'] = ''; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>

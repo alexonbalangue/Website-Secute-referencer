@@ -39,4 +39,32 @@ $lang['error_504_desc'] = 'The upstream server failed to send a request in the t
 $lang['error_506_title'] = '506 Variante ebenfalls ver&auml;nderlich!'; 
 $lang['error_506_desc'] = 'Ein Zugriff auf das angeforderte Objekt bzw. einer Variante dieses Objektes ist nicht m&ouml;glich, da es ebenfalls ein variables Objekt darstellt.'; 
 
+
+
+$lang['hacker_blockfile'] = ''; 
+$lang['hacker_blockfile'] = ''; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>

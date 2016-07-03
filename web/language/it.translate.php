@@ -39,4 +39,32 @@ $lang['error_504_desc'] = 'The upstream server failed to send a request in the t
 $lang['error_506_title'] = '506 La versione variante varia essa stessa!'; 
 $lang['error_506_desc'] = 'Non &egrave; possibile accedere all\'entit&agrave; richiesta perch&eacute; &egrave; essa stessa una risorsa negoziabile.'; 
 
+
+
+$lang['hacker_blockfile'] = ''; 
+$lang['hacker_blockfile'] = ''; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>

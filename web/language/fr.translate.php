@@ -39,4 +39,38 @@ $lang['error_504_desc'] = 'The upstream server failed to send a request in the t
 $lang['error_506_title'] = '506 La variante varie elle-m&ecirc;me!'; 
 $lang['error_506_desc'] = 'Une variante pour l\'entit&eacute; demand&eacute;e est elle-m&ecirc;me une ressource n&eacute;gociable. L\'acc&egrave;s est impossible.'; 
 
+
+
+$lang['hacker_blockfile_title'] = 'Accès un fichier non autoris&eacute;'; 
+$lang['hacker_blockfile_desc'] = 'Tentative d\'accès à un fichier dont l\'accès est strictement interdit depuis une URL'; 
+$lang['hacker_detectedbase64encode_title'] = 'base64 encoded'; 
+$lang['hacker_detectedbase64encode_desc'] = 'base64_encode détecté dans l\'URL'; 
+$lang['hacker_localfiles_title'] = 'liste noire'; 
+$lang['hacker_localfiles_desc'] = 'L\'URL contient des mots se trouvant dans la liste noire'; 
+$lang['hacker_spam_title'] = 'spammer'; 
+$lang['hacker_spam_desc'] = 'Êtes-vous un spammeur?'; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
