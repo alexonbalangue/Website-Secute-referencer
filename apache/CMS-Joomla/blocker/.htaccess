@@ -33,4 +33,5 @@ RewriteRule ^warning/filter-shell\.html$ index.php?full=hosting&hacker=filter-sh
 RewriteRule ^warning/query-string\.html$ index.php?full=hosting&hacker=query-string [L]
 RewriteRule ^warning/sql-injection\.html$ index.php?full=hosting&hacker=sql-injection [L]
 RewriteRule ^warning/global-request\.html$ index.php?full=hosting&hacker=global-request [L]
-RewriteRule ^warning/request-http\.html$ index.php?full=hosting&hacker=request-http
+RewriteRule ^warning/request-http\.html$ index.php?full=hosting&hacker=request-http [L]
+RewriteRule ^warning/hotlinking\.html$ index.php?full=hotlinking [L]

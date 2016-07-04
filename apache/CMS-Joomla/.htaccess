@@ -7,7 +7,9 @@
 #	If you using the CDN for exemple Cloudflare, comment some variable htaccess
 #	If you using Plesk or Cpanel some variable not need use in htaccess
 ######################################################################################
-#Default variable htaccess install 2 jully 2016 - i seen some variable use already - end custom 4 jully 2016
+#Default variable htaccess install 2 jully 2016 - i seen some variable use already - 
+#end custom Version 4 jully 2016
+#v1.0 - Deteled all comment not needed
 ##################################################################################################
 #
 # aeSecure v2.1 (c) AVONTURE Christophe (http://www.aesecure.com/)
@@ -378,7 +380,7 @@ RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
 #<IfModule mod_headers.c> 
 # <IfModule mod_setenvif.c>
 #    BrowserMatch MSIE ie
-#    Header set X-UA-Compatible "IE=Edge,chrome=1"# very older
+#    Header set X-UA-Compatible "IE=Edge,chrome=1"# very older method
     # mod_headers can't match by content-type, but we don't want to send this header on *everything*...
 #    <FilesMatch "\.(js|css|gif|png|jpe?g|webp|pdf|xml|oga|ogg|m4a|ogv|mp4|m4v|webm|svg|svgz|eot|ttf|otf|woff2?|ico|webp|appcache|manifest|htc|crx|xpi|safariextz|vcf)$" >
 #      Header unset X-UA-Compatible
@@ -562,10 +564,12 @@ RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
 	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?baidu.com [NC]
 	RewriteCond %{HTTP_REFERER}  !search\?q=cache               [NC]
 	RewriteCond %{HTTP_REFERER}  !google\.                      
-	RewriteRule \.(gif|jpe?g?|png|bmp|avi|mp4|flv|pls|m3u|asx|xspf|qtl)$ https://www.exemple.tld/blocked.jpg [NC,R,L]
+	RewriteRule \.(gif|jpe?g?|png|bmp|avi|mp4|flv|pls|m3u|asx|xspf|qtl)$ http://exemple.tld/error/hotlinking.html [NC,R,L]
 	
 RewriteEngine on
 #Error custom - if neccessary
+RewriteEngine on
+#Error custom
 RewriteRule ^error/400\.html$ blocker/index.php?full=pages&error=400 [L]
 RewriteRule ^error/401\.html$ blocker/index.php?full=pages&error=401 [L]
 RewriteRule ^error/403\.html$ blocker/index.php?full=pages&error=403 [L]
@@ -582,7 +586,22 @@ RewriteRule ^error/501\.html$ blocker/index.php?full=pages&error=501 [L]
 RewriteRule ^error/502\.html$ blocker/index.php?full=pages&error=502 [L]
 RewriteRule ^error/503\.html$ blocker/index.php?full=pages&error=503 [L]
 RewriteRule ^error/504\.html$ blocker/index.php?full=pages&error=504 [L]
-RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506 
+RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506 [L] 
+
+#Preventif security warning
+RewriteRule ^error/block-files\.html$ blocker/index.php?full=hosting&hacker=block-files [L]
+RewriteRule ^error/easter-eggs\.html$ blocker/index.php?full=hosting&hacker=easter-eggs [L]
+RewriteRule ^error/detected-base64-encode\.html$ blocker/index.php?full=hosting&hacker=detected-base64-encode [L]
+RewriteRule ^error/local-files\.html$ blocker/index.php?full=hosting&hacker=local-files [L]
+RewriteRule ^error/spam\.html$ blocker/index.php?full=hosting&hacker=spam [L]
+RewriteRule ^error/noaccess-folder-url\.html$ blocker/index.php?full=hosting&hacker=noaccess-folder-url [L]
+RewriteRule ^error/create-ghosts-users\.html$ blocker/index.php?full=hosting&hacker=create-ghosts-users [L]
+RewriteRule ^error/filter-shell\.html$ blocker/index.php?full=hosting&hacker=filter-shell [L]
+RewriteRule ^error/query-string\.html$ blocker/index.php?full=hosting&hacker=query-string [L]
+RewriteRule ^error/sql-injection\.html$ blocker/index.php?full=hosting&hacker=sql-injection [L]
+RewriteRule ^error/global-request\.html$ blocker/index.php?full=hosting&hacker=global-request [L]
+RewriteRule ^error/request-http\.html$ blocker/index.php?full=hosting&hacker=request-http [L]
+RewriteRule ^error/hotlinking\.html$ blocker/index.php?full=hotlinking [L]
 </IfModule>
 # Customize what Apache returns to the client in case of an error. - if neccessary
 
@@ -840,7 +859,7 @@ AddDefaultCharset utf-8
 </IfModule>
 
 # Block access to files that can expose sensitive information.
-<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|log|psd|sh|sql|sw[op])|~)$">
+<FilesMatch "(^#.*#|\.(bak|conf|dist|fla|in[ci]|bat|log|psd|sh|sql|sw[op])|~)$">
     # Apache < 2.3
 #    <IfModule !mod_authz_core.c>
 #        Order allow,deny

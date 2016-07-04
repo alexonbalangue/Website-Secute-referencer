@@ -4,7 +4,7 @@ define('__FONTAWESOMEVERSION__', '4.6.3');
 define('__JQUERYVERSION__', '1.12.4');
 
 //Default domaine name (=ip dedicated/shared)
-$my_domainname = 'www.exemple.gtld'
+$my_domainname = 'www.exemple.gtld';
 
 $amp = ''; #yes or empty (require HTTPS)
 

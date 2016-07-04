@@ -187,42 +187,10 @@ if(isset($_GET['full'])){
 				include 'pages/header.php';
 				include 'pages/hacker/request-http.php';
 				include 'pages/footer.php';
-			} else if($_GET['hacker'] == 'easter-eggs'){
-				$title = $lang['hacker_eastereggs_title'];
-				$desc = $lang['hacker_eastereggs_desc'];
-				include 'pages/header.php';
-				include 'pages/hacker/easter-eggs.php';
-				include 'pages/footer.php';
-			} else if($_GET['hacker'] == 'easter-eggs'){
-				$title = $lang['hacker_eastereggs_title'];
-				$desc = $lang['hacker_eastereggs_desc'];
-				include 'pages/header.php';
-				include 'pages/hacker/easter-eggs.php';
-				include 'pages/footer.php';
-			} else if($_GET['hacker'] == 'easter-eggs'){
-				$title = $lang['hacker_eastereggs_title'];
-				$desc = $lang['hacker_eastereggs_desc'];
-				include 'pages/header.php';
-				include 'pages/hacker/easter-eggs.php';
-				include 'pages/footer.php';
-			} else if($_GET['hacker'] == 'easter-eggs'){
-				$title = $lang['hacker_eastereggs_title'];
-				$desc = $lang['hacker_eastereggs_desc'];
-				include 'pages/header.php';
-				include 'pages/hacker/easter-eggs.php';
-				include 'pages/footer.php';
-			} else if($_GET['hacker'] == 'easter-eggs'){
-				$title = $lang['hacker_eastereggs_title'];
-				$desc = $lang['hacker_eastereggs_desc'];
-				include 'pages/header.php';
-				include 'pages/hacker/easter-eggs.php';
-				include 'pages/footer.php';
-			} else if($_GET['hacker'] == 'easter-eggs'){
-				$title = $lang['hacker_eastereggs_title'];
-				$desc = $lang['hacker_eastereggs_desc'];
-				include 'pages/header.php';
-				include 'pages/hacker/easter-eggs.php';
-				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'hotlinking'){
+				$title = $lang['hacker_hotlinking_title'];
+				$desc = $lang['hacker_hotlinking_desc'];
+				include 'pages/hacker/hotlinking.php';
 			} else {
 				header("Location: http://$my_domainname");
 			}

@@ -113,27 +113,91 @@ if(isset($_GET['full'])){
 		} else {
 			header("Location: http://$my_domainname");
 		}
-	}/** else if($_GET['full'] == 'hosting'){
+	} else if($_GET['full'] == 'hosting'){
 		if(isset($_GET['hacker'])){
-			if($_GET['hacker'] == 'exemple1'){
-				$title = $lang['3'];
-				$desc = $lang['4'];
+			if($_GET['hacker'] == 'block-files'){
+				$title = $lang['hacker_blockfile_title'];
+				$desc = $lang['hacker_blockfile_desc'];
 				include 'pages/header.php';
-				#include 'pages/hacker/---.php';
+				include 'pages/hacker/block-files.php';
 				include 'pages/footer.php';
-			} else if($_GET['hacker'] == 'sonn-available'){
-				$title = $lang['1'];
-				$desc = $lang['2'];
+			} else if($_GET['hacker'] == 'easter-eggs'){
+				$title = $lang['hacker_eastereggs_title'];
+				$desc = $lang['hacker_eastereggs_desc'];
 				include 'pages/header.php';
-				#include 'pages/hacker/---.php';
+				include 'pages/hacker/easter-eggs.php';
 				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'detected-base64-encode'){
+				$title = $lang['hacker_detectedbase64encode_title'];
+				$desc = $lang['hacker_detectedbase64encode_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/detected-base64-encode.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'local-files'){
+				$title = $lang['hacker_localfiles_title'];
+				$desc = $lang['hacker_localfiles_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/local-files.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'spam'){
+				$title = $lang['hacker_spam_title'];
+				$desc = $lang['hacker_spam_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/spam.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'noaccess-folder-url'){
+				$title = $lang['hacker_noaccessfolderurl_title'];
+				$desc = $lang['hacker_noaccessfolderurl_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/noaccess-folder-url.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'create-ghosts-users'){
+				$title = $lang['hacker_createghostsusers_title'];
+				$desc = $lang['hacker_createghostsusers_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/create-ghosts-users.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'filter-shell'){
+				$title = $lang['hacker_filtershell_title'];
+				$desc = $lang['hacker_filtershell_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/filter-shell.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'query-string'){
+				$title = $lang['hacker_querystring_title'];
+				$desc = $lang['hacker_querystring_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/query-string.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'sql-injection'){
+				$title = $lang['hacker_sqlinjection_title'];
+				$desc = $lang['hacker_sqlinjection_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/sql-injection.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'global-request'){
+				$title = $lang['hacker_globalrequest_title'];
+				$desc = $lang['hacker_globalrequest_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/global-request.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'request-http'){
+				$title = $lang['hacker_requesthttp_title'];
+				$desc = $lang['hacker_requesthttp_desc'];
+				include 'pages/header.php';
+				include 'pages/hacker/request-http.php';
+				include 'pages/footer.php';
+			} else if($_GET['hacker'] == 'hotlinking'){
+				$title = $lang['hacker_hotlinking_title'];
+				$desc = $lang['hacker_hotlinking_desc'];
+				include 'pages/hacker/hotlinking.php';
 			} else {
 				header("Location: http://$my_domainname");
 			}
 		} else {
 			header("Location: http://$my_domainname");
 		}
-	}**/ else {
+	} else {
 			header("Location: http://$my_domainname");
 		}
 }else{

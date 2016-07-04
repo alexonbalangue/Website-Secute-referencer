@@ -41,7 +41,6 @@ $lang['error_506_title'] = '506 Variant also varies!';
 $lang['error_506_desc'] = 'A variant for the requested entity is itself a negotiable resource. Access not possible.';
 
 
-
 $lang['hacker_blockfile_title'] = 'Accès un fichier non autoris&eacute;'; 
 $lang['hacker_blockfile_desc'] = 'Tentative d\'accès à un fichier dont l\'accès est strictement interdit depuis une URL'; 
 $lang['hacker_detectedbase64encode_title'] = 'base64 encoded'; 
@@ -64,10 +63,8 @@ $lang['hacker_globalrequest_title'] = 'modifier les variables grobales ou la req
 $lang['hacker_globalrequest_desc'] = 'Tentative de modifier les variables globales ou de la requête web passée au serveur'; 
 $lang['hacker_requesthttp_title'] = 'les requêtes HTTP'; 
 $lang['hacker_requesthttp_desc'] = 'Ce type de requêtes est interdit'; 
-
-
-
-
+$lang['hacker_hotlinking_title'] = 'hotlinking'; 
+$lang['hacker_hotlinking_desc'] = '&copy; '.date('Y'); 
 
 
 
