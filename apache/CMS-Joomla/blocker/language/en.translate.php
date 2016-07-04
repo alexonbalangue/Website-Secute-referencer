@@ -38,6 +38,51 @@ $lang['error_503_desc'] = 'The server is temporarily unable to service your requ
 $lang['error_504_title'] = '504 GATEWAY TIMEOUT'; 
 $lang['error_504_desc'] = 'The upstream server failed to send a request in the time allowed by the server.'; 
 $lang['error_506_title'] = '506 Variant also varies!'; 
-$lang['error_506_desc'] = 'A variant for the requested entity is itself a negotiable resource. Access not possible.'; 
+$lang['error_506_desc'] = 'A variant for the requested entity is itself a negotiable resource. Access not possible.';
+
+
+
+$lang['hacker_blockfile_title'] = 'Accès un fichier non autoris&eacute;'; 
+$lang['hacker_blockfile_desc'] = 'Tentative d\'accès à un fichier dont l\'accès est strictement interdit depuis une URL'; 
+$lang['hacker_detectedbase64encode_title'] = 'base64 encoded'; 
+$lang['hacker_detectedbase64encode_desc'] = 'base64_encode détecté dans l\'URL'; 
+$lang['hacker_localfiles_title'] = 'liste noire'; 
+$lang['hacker_localfiles_desc'] = 'L\'URL contient des mots se trouvant dans la liste noire'; 
+$lang['hacker_spam_title'] = 'spammer'; 
+$lang['hacker_spam_desc'] = 'Êtes-vous un spammeur?'; 
+$lang['hacker_noaccessfolderurl_title'] = 'accès aux dossiers non autoris&eacute;'; 
+$lang['hacker_noaccessfolderurl_desc'] = 'Tentative d\'accès à un fichier/dossier dont l\'accès depuis une URL n\'est pas autorisé'; 
+$lang['hacker_createghostsusers_title'] = 'aucun cr&eacute;ation utilisateur'; 
+$lang['hacker_createghostsusers_desc'] = 'Aucune création d\'utilisateur ne peut se faire sur ce site web'; 
+$lang['hacker_filtershell_title'] = 'Filtre SSH non autoris&eacute;'; 
+$lang['hacker_filtershell_desc'] = 'Attaque de type shell détectée'; 
+$lang['hacker_querystring_title'] = 'Query String'; 
+$lang['hacker_querystring_desc'] = 'Appel à des fonctions comme ID de la session PHP et contient des caract&egrave;res non autoris&eacute; depuis l\'URL'; 
+$lang['hacker_sqlinjection_title'] = 'Blocker injection SQL'; 
+$lang['hacker_sqlinjection_desc'] = 'Tentative d\'injections SQL';
+$lang['hacker_globalrequest_title'] = 'modifier les variables grobales ou la requête non autoris&eacute;'; 
+$lang['hacker_globalrequest_desc'] = 'Tentative de modifier les variables globales ou de la requête web passée au serveur'; 
+$lang['hacker_requesthttp_title'] = 'les requêtes HTTP'; 
+$lang['hacker_requesthttp_desc'] = 'Ce type de requêtes est interdit'; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ?>

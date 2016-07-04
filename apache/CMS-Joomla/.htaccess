@@ -7,7 +7,494 @@
 #	If you using the CDN for exemple Cloudflare, comment some variable htaccess
 #	If you using Plesk or Cpanel some variable not need use in htaccess
 ######################################################################################
+#Default variable htaccess install 2 jully 2016 - i seen some variable use already - end custom 4 jully 2016
+##################################################################################################
+#
+# aeSecure v2.1 (c) AVONTURE Christophe (http://www.aesecure.com/)
+#
+# !!! ---------------------------------------------------------------------------------------- !!!
+# !!! DON'T MODIFIY THIS FILE MANUALLY.   IF YOU NEED TO ADD RULES IN IT, JUST USE YOUR        !!!
+# !!! http://yoursite/aesecure/setup.php?YOUR_LONG_KEY PAGE INTERFACE AND GO TO OPTION 1.4     !!!
+# !!! "Manual edit of your .htaccess"                                                          !!!
+# !!! ---------------------------------------------------------------------------------------- !!!
+#
+# If the .htaccess file isn't working at all, check in your httpd.conf server file that
+# AllowOverride variable is not set on None and in that case change the settings to All
+#
+# So change "AllowOveridde None" to "AllowOverride All" (without double-quote).  Restart then the Apache server.
+#
+##################################################################################################
+#aeSecure 1.1
 
+#AESECURE_BLOCKUSERAGENT_START
+#AESECURE_BLOCKUSERAGENT_END
+#AESECURE_BLOCKIP_START
+#AESECURE_BLOCKIP_END
+#AESECURE_BLOCKPARTURL_START
+#AESECURE_BLOCKPARTURL_END
+#AESECURE_BLOCKREFERRER_START
+#AESECURE_BLOCKREFERRER_END
+
+# Define the 403 - Access denied page - i use it already not need
+#ErrorDocument 403 '<html xmlns="http://www.w3.org/1999/xhtml"><head><style type="text/css" >body{color:#fff;background-color:#851507;font:14px/1.5 Helvetica,Arial,sans-serif};</style><title>Access denied</title></head><body><div style="margin:20px auto;width:700px;padding-top:50px"><img src="assets/images/aesecure_denied.png" style="float:right;" alt="aeSecure"/><h1>Access denied, unauthorized access.<br/><br/>If you think it\'s an error, please inform the webmaster to help him to adjust his security rules.  Thank you.</h1><pre style="padding:20px;white-space:pre-line;border-radius:10px;background-color:#b34334">Code : 403 - Deny access</pre></div></body></html>'
+
+# Force to mention index.html when trying to access f.i. to http://yoursite/images
+#<IfModule mod_autoindex.c>
+# IndexIgnore *
+#Adding already htaccess default of joomla
+ ##
+ # READ THIS COMPLETELY IF YOU CHOOSE TO USE THIS FILE!
+ #
+ # The line just below this section: 'Options +FollowSymLinks' may cause problems
+ # with some server configurations.  It is required for use of mod_rewrite, but may already
+ # be set by your server administrator in a way that dissallows changing it in
+ # your .htaccess file.  If using it causes your server to error out, comment it out (add # to
+ # beginning of line), reload your site in your browser and test your sef url's.  If they work,
+ # it has been set by your server administrator and you do not need it set here.
+ ##
+ ## Can be commented out if causes errors, see notes above.
+ #Options +FollowSymLinks -Indexes - already add on h5bp
+#</IfModule>
+
+# Define the default page ordering (first index.php if present, otherwise index.html) - not neccessary if you use vps/dedicated already configit
+#DirectoryIndex index.php index.html
+
+#AESECURE_MAINTENANCE_START
+#AESECURE_MAINTENANCE_END
+
+#AESECURE_COMPRESSION_START
+#AESECURE_COMPRESSION_END
+
+#Uncomment if want to force HTTPS and if your server can handle it - Not neccessary h5bp use already
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+# -------------------------------------------------------------------------
+# -- Inclusion of the aeSecure Premium htaccess (only for Premium users) --
+
+# -------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------
+# ----------------------------- Site security -----------------------------
+# -------------------------------------------------------------------------
+
+# Activate PHP 5.4 which is more secure than older version
+# Comment this line when php is no more executed but downloaded, it's the case on local webserver (localhost) or
+# when your hosting company doesn't support php 5.4 yet
+#<IfModule mod_php5.c># not supported with PHP 7/+
+ #AddHandler application/x-httpd-php54 .php .php5 .php4 .php3.
+#</IfModule>
+
+#AESECURE_FILEUPLOAD_START
+#AESECURE_FILEUPLOAD_END
+
+#AESECURE_ERRORREPORTING_START
+#aeSecure 1.3
+# Disable errors and warnings; don't allow the user to see them but redirect them into a logfile
+# not supported with PHP 7/+
+#<IfModule mod_php5.c>
+# php_flag display_errors off
+# php_flag log_errors on
+# php_value track_errors on
+# php_value error_log aesecure/logs/error.log
+#</IfModule>
+#AESECURE_ERRORREPORTING_END
+
+#<IfModule mod_php5.c># not supported with PHP 7/+ 
+#or not neccessary if you use plesk with vps or dedicated server
+ # Be sure that these php.ini variables are correctly initialized
+# php_value register_globals off
+
+ # Disable magic_quotes (if not yet done in httpd.conf)
+# php_flag magic_quotes_runtime off
+# php_flag magic_quotes_sybase off
+
+ # Set your default timezone.
+# php_value date.timezone Europe/Brussels
+
+ # Increase cookie security; reduce XSS attacks
+ # http://www.php.net/manual/fr/session.configuration.php#ini.session.cookie-httponly
+ # CAUSE PROBLEM WITH AUTHENTIFICATION IN JOOMLA!®  DON'T UNCOMMENT.
+ #php_value session.cookie_secure true
+ #php_value session.use_only_cookies true
+ #php_value session.cookie_httponly true
+
+# </IfModule>
+
+#############BEGIN - VERIFIFY ALL THAT - CUSTOMER ALEXON BALANGUE################
+# ------------------------------
+# --- Block files/folders
+
+<IfModule mod_rewrite.c>
+
+ RewriteEngine On
+
+ #AESECURE_BLOCKFILE_START
+#aeSecure 1.7
+# Block direct access to these files : don't allow an url like f.i. http://yoursite/configuration.php
+RewriteCond %{REQUEST_FILENAME} (boot.ini|configuration.php|htaccess.txt|install.mysql)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (boot.ini|configuration.php|htaccess.txt|install.mysql).*$ [NC,OR]
+RewriteCond %{REQUEST_FILENAME} (install.pgsql|install.txt|joomla.xml|LICENSE.txt|php.ini|phpinfo.php|README.txt)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (install.pgsql|install.txt|joomla.xml|LICENSE.txt|php.ini|phpinfo.php|README.txt).*$ [NC,OR]
+RewriteCond %{REQUEST_FILENAME} (web.config.txt|web.config)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (web.config.txt|web.config).*$
+RewriteCond %{SCRIPT_FILENAME} -f
+RewriteRule .* /error/block-files.html [L]
+#AESECURE_BLOCKFILE_END
+
+ # Never direct access to these files or folder (aesecure)
+ # Block f.i. http://yoursite/.htaccess, http://yoursite/configuration.php, ...
+ RewriteCond %{REQUEST_FILENAME} .*\.(phtm?l?|ash?x|aspx?|cfml?|cgi|pl|jsp|sql|bat)$ [NC,OR] #i add *.bat (hosting on microsoft windows) similar linux with *.sh
+ RewriteCond %{REQUEST_FILENAME} .*\.(bak|config|dll|exe|sql|ini|log|sh|inc|dist)$ [NC,OR]
+ RewriteCond %{REQUEST_FILENAME} .*\.(htaccess|htaccess_old|htpasswd|htaccess_bak|error_logs)$ [NC]
+ RewriteCond %{SCRIPT_FILENAME} -f
+ RewriteRule .* /error/block-files.html [L]
+
+ # ------------------------------
+ # --- Block fingerprint
+
+ # Block &tp=1 or &tmpl=offline ...
+ # Block f.i. http://yoursite/index.php?tmpl=offline
+ RewriteCond %{QUERY_STRING} (^|&)tmpl=(system|offline) [NC]
+ RewriteRule .* - [L]
+ RewriteCond %{QUERY_STRING} (^|&)tp= [NC]
+ RewriteRule .* - [F]
+
+ # ------------------------------
+ # --- Block specific querystring
+
+ # PHP Easter Eggs
+ # Block f.i. http://yoursite/index.php?=PHPE9568F34-D428-11d2-A769-00AA001ACF42 but not if 
+ # the request comes from the webserver himself (=allowed on localhost and serveur (since called by Joomla backend))
+ RewriteCond %{REMOTE_ADDR} !127.0.0.1
+ RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC]
+ RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?developper\.sites\.alexonbalangue\.me [NC] #Custom your own domain name here
+ RewriteRule .* /error/easter-eggs.html [L]
+ 
+ # Block out any script trying to modify a _REQUEST / PHP GLOBAL variables via URL
+ # Block out any script trying to set a PHP GLOBALS variable via URL.
+ # Block f.i. http://yoursite/index.php?GLOBALS=SuperMe
+ RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR] #already on joomla default
+ RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) #already on joomla default
+ RewriteCond %{QUERY_STRING} ((\?|&)GLOBALS(=|\[|\%[0-9A-Z]{0,2})?) [NC,OR]
+ RewriteCond %{QUERY_STRING} ((\?|&)_REQUEST(=|\[|\%[0-9A-Z]{0,2})?) [NC]
+ RewriteRule .* /error/global-request.html [L]
+
+ # Block out any script that includes a <script> tag in URL.
+ # Block f.i. http://yoursite/index.php?%3Cscript%3Ealert%28%27Msg%27%29;%3C/script%3E
+ # Block f.i. http://yoursite/index.php?%3Ctable%20background=%22javascript:alert(([code])%22%3E%3C/table%3E
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*embed.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^e]*e)+mbed.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*object.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^o]*o)+bject.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR] 
+ RewriteCond %{QUERY_STRING} ((java)?script:).*(;).* [NC,OR]   
+ RewriteCond %{QUERY_STRING} .*(\&lt;script).* [NC] 
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=541 [L]
+
+ #xss blocage  For instance, a parameter on the querystring is an url (http://...)
+ RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
+ RewriteRule .* /joomla/aesecure/accessdenied.php?s=651 [L]
+
+ 
+ # Block out any script trying to base64_encode data within the URL.
+ # Block f.i. http://yoursite/index.php?ImageName=base64_encode(%22I'm%20an%20hacker...%20Tadaaa%22)
+ RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
+ RewriteCond %{QUERY_STRING} .*base64_(en|cs|de|es|fr|it|ja|ko|nl|pl|pt|ro|sv|tr|ru)code.* [NC]
+ RewriteRule .* /error/detected-base64-encode.html [L]
+
+ # Redirect tentative to use the com_users standard component of Joomla and
+ # redirect to Community Builder
+ #RewriteCond %{QUERY_STRING} option=com_users&view=login [NC]
+ #RewriteRule .* index.php?option=com_comprofiler&task=login [L]
+
+ # Prevent use of specified methods in HTTP Request,  but allow opensiteexplorer.org to do so
+ # http://bodvoc.com/index.php?option=com_content&view=article&id=43&catid=2&Itemid=3; see rule #1
+ RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK) [NC]
+# RewriteCond %{HTTP_REFERER} !(www\.)?opensiteexplorer\.org/ [NC]# not exist redirect to the website moz
+ RewriteCond %{HTTP_REFERER} !(www\.)?pingdom\.com/ [NC]
+ RewriteCond %{HTTP_REFERER} !(www\.)?uptimerobot\.com/ [NC]
+ RewriteCond %{HTTP_REFERER} !http://validator\.w3\.org/ [NC]
+ RewriteCond %{HTTP_REFERER} !http://jigsaw\.w3\.org/ [NC] #css validation
+ RewriteRule .* /error/request-http.html [L]
+
+ # Block out use of illegal or unsafe characters in the HTTP Request
+ # Block urls having a carriage return or linefeed in it
+ # Block also urls having "wwwroot" or "public_html" in it.  Can be an hacker trying to access to a localfile
+ # Block urls having "alert(", "char(", "eval(", "function(" ... 
+ RewriteCond %{QUERY_STRING} .*((alert|char|eval|function|load_file)\().* [NC,OR]
+ RewriteCond %{QUERY_STRING} .*(\_vti\_|crossdomain|wwwroot|public_html|httpddocs|www).* [NC,OR] #add for Plesk, Xampp, linux installer web server default (Desktop/server)
+ RewriteCond %{QUERY_STRING} .*(\\r|\\n|%0A|%0D).* [NC]
+ RewriteRule .* /error/local-files.html [L]
+
+
+
+ # Block SQL injection tentatives
+ # Block f.i. http://yoursite/index.php?%3CDROP%20TABLE%20jos_users%3E
+ RewriteCond %{QUERY_STRING} ^.*(;|<|>|'|"|\)|%0A|%0D|%22|%25|%27|%3C|%3E|%00).*(/\*|union|select|insert|cast|declare|drop|update|md5|benchmark).* [NC,OR]
+ RewriteCond %{QUERY_STRING} ^.*(%20)?([(])?(union|select|insert|cast|declare|group_concat|drop|update|md5|benchmark)%20.* [NC,OR] 
+ RewriteCond %{QUERY_STRING} ^.*(%20|\+)(AND|OR)(%20|\+).* [NC,OR] 
+ RewriteCond %{QUERY_STRING} ^.*(%20|\+)ORDER(%20|\+).* [NC,OR] 
+ RewriteCond %{QUERY_STRING} ^.*%201\=1.* [NC] 
+ #RewriteRule .* /joomla/aesecure/accessdenied.php?s=682 [L] # why add this
+ # Block urls trying to get access to the jos_ defaut prefix of Joomla 1.5 = on J3.5 version Prod not use any more jos_ prefix databasse
+ RewriteCond %{QUERY_STRING} .*jos_.*  [NC]
+ #RewriteCond %{QUERY_STRING} .*jos_.*  [NC]	#add your own prefix you used on databasse
+ RewriteRule .* /error/sql-injection.html [L]
+
+
+ # Block querystring where "PHPSESSID" appears.
+ RewriteCond %{QUERY_STRING} ^.*PHPSESSID.*$ [NC]
+ #RewriteRule .* /error/query-string.html [L]
+ # No carriage return, line feed, escape (%27), ... in the query string
+ # Block f.i. http://yoursite/index.php?value=%27
+ RewriteCond %{QUERY_STRING} ^.*(<|>|'|%0A|%0D|%25|%27|%3C|%3E|%00).* [NC,OR]
+ RewriteCond %{QUERY_STRING} ^.*((\/\*)?\*\/).* [NC,OR]
+ RewriteCond %{QUERY_STRING} ^.*\|\|.* [NC]
+ RewriteCond %{QUERY_STRING} !option=com_akeeba(.*)$ [NC]   # exception for Akeeba backup
+ #RewriteRule .* /error/query-string.html [L]
+ #Block functions in the query-string (f.i. String.fromCharCode)
+ RewriteCond %{QUERY_STRING} ^.*string\.fromcharcode.* [NC]
+ RewriteRule .* /error/query-string.html [L]
+
+ # Filter against shell attacks
+ # Block f.i. http://yoursite/index.php?cmd=chmod or http://yoursite/index.php?act=tools&d=54
+ # http://yoursite/index.php?page=../../../../proc/self/environ or http://yoursite/index.php?cmd=../../etc/passwd
+
+ RewriteCond %{REQUEST_URI} .*((php|my)?shell|remview.*|phpremoteview.*|sshphp.*|pcom|nstview.*|c99|r57|webadmin.*|phpget.*|phpwriter.*|fileditor.*|locus7.*|storm7.*)\.(p?s?x?htm?l?|txt|aspx?|cfml?|cgi|pl|php[3-9]{0,1}|jsp?|sql|xml) [NC,OR]
+ RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
+ RewriteCond %{QUERY_STRING} ^(.*)([-_a-z]{1,15})=(chmod|chdir|mkdir|rmdir|clear|whoami|uname|unzip|gunzip|grep|umask|telnet|ssh|ftp|mkmode|logname|edit_file|search_text|find_text|php_eval|download_file|ftp_file_down|ftp_file_up|ftp_brute|mail_file|mysql_dump|mysqli_dump_debug_info|db_query)([^a-zA-Z0-9].+)*$ [OR]
+ RewriteCond %{QUERY_STRING} ^work_dir=.*$ [OR]
+ RewriteCond %{QUERY_STRING} ^command=.*&output.*$ [OR]
+ RewriteCond %{QUERY_STRING} ^nts_[a-z0-9_]{0,10}=.*$ [OR]
+ RewriteCond %{QUERY_STRING} ^c=(t|setup|codes)$ [OR]
+ RewriteCond %{QUERY_STRING} ^act=((about|cmd|selfremove|autoremove|rm|remove|trojan|backc|massbrowsersploit|exploits|grablogins|upload.*)|((chmod|f)&f=.*))$ [OR]
+ RewriteCond %{QUERY_STRING} ^act=(ls|search|fsbuff|encoder|tools|processes|ftpquickbrute|security|sql|eval|update|feedback|cmd|gofile|mkfile)&d=.*$ [OR]
+ RewriteCond %{QUERY_STRING} ^&?c=(l?v?i?&d=|v&fnot=|setup&ref=|l&r=|d&d=|tree&d|t&d=|e&d=|i&d=|codes|md5crack).*$ [OR]
+ RewriteCond %{QUERY_STRING} ^(.*)*etc(/|%2F)passwd* [OR]
+ # Windows slashes \..
+ RewriteCond %{QUERY_STRING} .*(((\\|%5C)\.\.\\)+).* [OR]
+ # Unix slashes /..
+ RewriteCond %{QUERY_STRING} .*(((\/|%2F)\.\.)+).* [OR]
+ RewriteCond %{QUERY_STRING} ^(.*)*proc\/self\/environ* [NC]
+ RewriteRule .* /error/filter-shell.html [L]
+</IfModule>
+
+#AESECURE_BLOCKHIDDENFOLDERS_START
+#aesecure 2.6
+# Block access to hidden files and directories.
+# This includes directories used by version control systems such as Git and SVN.
+# not need had already with h5bp
+#<IfModule mod_rewrite.c>
+# RewriteCond %{SCRIPT_FILENAME} -d [OR]
+# RewriteCond %{SCRIPT_FILENAME} -f
+# RewriteRule "(^|/)\." /joomla/aesecure/accessdenied.php?s=26 [L]
+#</IfModule>
+#AESECURE_BLOCKHIDDENFOLDERS_END
+#AESECURE_BLOCK_COM_USERS_START
+#aeSecure 4.2
+<IfModule mod_rewrite.c>
+ RewriteEngine On
+ # Don't allow access to the registration native url.  This url is used by robots to create ghosts users
+ # Block f.i. http://yoursite/index.php?option=com_users&view=registration
+ RewriteCond %{QUERY_STRING} option=com_users&view=registration [NC]
+ RewriteRule .* /error/create-ghosts-users.html [L]
+</IfModule>
+
+#AESECURE_BLOCK_COM_USERS_END
+#AESECURE_BADBOTS_START
+#aeSecure 2.3
+# ------------------------------
+# --- Block bad bots and spam
+
+# Block website "aspirator" and well known bad bots.  This list is NOT exhaustive.
+<IfModule mod_setenvif.c>
+ SetEnvIfNoCase ^User-Agent$ .*(aesop_com_spiderman|ahrefsbot|alexibot|backweb|bandit|batchftp|bigfoot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(black.?hole|blackwidow|blowfish|botalot|buddy|builtbottough|bullseye).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(cheesebot|cherrypicker|chinaclaw|collector|copier|copyrightcheck).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(cosmos|crescent|curl|custo|da|diibot|disco|dittospyder|dragonfly).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(drip|easydl|ebingbong|ecatch|eirgrabber|emailcollector|emailsiphon).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(emailwolf|erocrawler|exabot|eyenetie|filehound|flashget|flunky).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(frontpage|getright|getweb|go.?zilla|go-ahead-got-it|gotit|grabnet).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(grafula|harvest|hloader|hmview|httplib|httrack|humanlinks|ilsebot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(infonavirobot|infotekies|intelliseek|interget|iria|jennybot|jetcar).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(joc|justview|jyxobot|kenjin|keyword|larbin|leechftp|lexibot|lftp|libweb).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(likse|linkscan|linkwalker|lnspiderguy|lwp|magnet|mag-net|markwatch).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(mata.?hari|memo|microsoft.?url|midown.?tool|miixpc|mirror|missigua).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(mister.?pix|mj12bot|moget|mozilla.?newt|nameprotect|navroad|backdoorbot|nearsite).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(net.?vampire|netants|netcraft|netmechanic|netspider|nextgensearchbot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(attach|nicerspro|nimblecrawler|npbot|octopus|offline.?explorer).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(offline.?navigator|openfind|outfoxbot|pagegrabber|papa|pavuk).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(pcbrowser|php.?version.?tracker|pockey|propowerbot|prowebwalker).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(psbot|pump|queryn|recorder|realdownload|reaper|reget|rogerbot|true_robot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(repomonkey|rma|internetseer|sitesnagger|siphon|slysearch|smartdownload).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(snake|snapbot|snoopy|sogou|spacebison|spankbot|spanner|sqworm|superbot).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(superhttp|surfbot|asterias|suzuran|szukacz|takeout|teleport).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(telesoft|the.?intraformant|thenomad|tighttwatbot|titan|urldispatcher).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(turingos|turnitinbot|urly.?warning|vacuum|vci|voideye|whacker).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(widow|wisenutbot|wwwoffle|xaldon|zeus|zyborg|anonymouse).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*web(zip|emaile|enhancer|fetch|go.?is|auto|bandit|clip|copier|master|reaper|sauger|site.?quester|whack).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(craftbot|download|extract|stripper|sucker|ninja|clshttp|webspider|leacher|collector|grabber|webpictures).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^User-Agent$ .*(libwww-perl|aesop_com_spidermano).* HTTP_SAFE_BADBOT
+ #addd Bad bot nocif
+ SetEnvIfNoCase ^User-Agent$ .*(Abonti|aggregator|AhrefsBot|asterias|BDCbot|BLEXBot|BuiltBotTough|Bullseye|BunnySlippers|ca\-crawler|CCBot|Cegbfeieh|CheeseBot|CherryPicker|CopyRightCheck|cosmos|Crescent|discobot|DittoSpyder|DotBot|Download Ninja|EasouSpider|EmailCollector|EmailSiphon|EmailWolf|EroCrawler|Exabot|ExtractorPro|Fasterfox|FeedBooster|Foobot|Genieo|grub\-client|Harvest|hloader|httplib|HTTrack|humanlinks|ieautodiscovery|InfoNaviRobot|IstellaBot|Java/1\.|JennyBot|k2spider|Kenjin Spider|Keyword Density/0\.9|larbin|LexiBot|libWeb|libwww|LinkextractorPro|linko|LinkScan/8\.1a Unix|LinkWalker|LNSpiderguy|lwp\-trivial|magpie|Mata Hari|MaxPointCrawler|MegaIndex|Microsoft URL Control|MIIxpc|Mippin|Missigua Locator|Mister PiX|MJ12bot|moget|MSIECrawler|NetAnts|NICErsPRO|Niki\-Bot|NPBot|Nutch|Offline Explorer|Openfind|panscient\.com|PHP/5\.\{|ProPowerBot/2\.14|ProWebWalker|Python\-urllib|QueryN Metasearch|RepoMonkey|RMA|SemrushBot|SeznamBot|SISTRIX|sitecheck\.Internetseer\.com|SiteSnagger|SnapPreviewBot|Sogou|SpankBot|spanner|spbot|Spinn3r|suzuran|Szukacz/1\.4|Teleport|Telesoft|The Intraformant|TheNomad|TightTwatBot|Titan|toCrawl/UrlDispatcher|True_Robot|turingos|TurnitinBot|UbiCrawler|UnisterBot|URLy Warning|VCI|WBSearchBot|Web Downloader/6\.9|Web Image Collector|WebAuto|WebBandit|WebCopier|WebEnhancer|WebmasterWorldForumBot|WebReaper|WebSauger|Website Quester|Webster Pro|WebStripper|WebZip|Wotbox|wsr\-agent|WWW\-Collector\-E|Xenu|Zao|Zeus|ZyBORG|coccoc|Incutio|lmspider|memoryBot|SemrushBot|serf|Unknown|uptime files).* HTTP_SAFE_BADBOT
+ SetEnvIfNoCase ^Referer$ .*(semalt\.com|kambasoft\.com|savetubevideo\.com|buttons\-for\-website\.com|sharebutton\.net|soundfrost\.org|srecorder\.com|softomix\.com|softomix\.net|myprintscreen\.com|joinandplay\.me|fbfreegifts\.com|openmediasoft\.com|zazagames\.org|extener\.org|openfrost\.com|openfrost\.net|googlsucks\.com|best\-seo\-offer\.com|buttons\-for\-your\-website\.com|www\.Get\-Free\-Traffic\-Now\.com|best\-seo\-solution\.com|buy\-cheap\-online\.info|site3\.free\-share\-buttons\.com|webmaster\-traffic\.com).* HTTP_SAFE_BADBOT 
+ # Don't redirect to the access denied page since the user agent can't definitly access to our pages
+ Order Deny,Allow
+ Allow from All
+ Deny from env=HTTP_SAFE_BADBOT
+</IfModule>
+
+#<IfModule mod_rewrite.c>
+# RewriteEngine On
+ # Antispam (just populate the list of other keywords)
+ #If you use Disqu not need this
+ # Block f.i. http://yoursite/index.php?postmsg=ejaculation i.e. any querystring that contains one "blacklisted" word
+# RewriteCond %{QUERY_STRING} \b(ambien|blue\spill|cialis|cocaine|ejaculation|erectile)\b [NC,OR]
+# RewriteCond %{QUERY_STRING} \b(erections|hoodia|huronriveracres|impotence|levitra|libido)\b [NC,OR]
+# RewriteCond %{QUERY_STRING} \b(lipitor|phentermin|pro[sz]ac|sandyauer|tramadol|troyhamby)\b [NC,OR]
+# RewriteCond %{QUERY_STRING} \b(soma|ambien|cialis|buycialis|hydrocodone|viagraonline|cialisonline|phentermine|viagrabuy|percocet|tramadol|propecia|xenical|meridia|levitra|vicodin|viagra|valium|porno|sex)\b [NC,OR]
+# RewriteCond %{QUERY_STRING} \b(ultram|unicauca|valium|viagra|vicodin|vuiton|xanax|ypxaieo)\b [NC]
+# RewriteCond %{QUERY_STRING} \b(-online|4u|adipex|advicer|baccarrat|blackjack|bllogspot|booker|byob|car-rental-e-site|car-rentals-e-site|carisoprodol|casino|casinos|chatroom|cialis|coolcoolhu|coolhu|credit-card-debt|credit-report-4u|cwas|cyclen|cyclobenzaprine|dating-e-site|day-trading|debt-consolidation|debt-consolidation-consultant|discreetordering|duty-free|dutyfree|equityloans|fioricet|flowers-leading-site|freenet-shopping|freenet|gambling-|hair-loss|health-insurancedeals-4u|homeequityloans|homefinance|holdem|holdempoker|holdemsoftware|holdemtexasturbowilson|hotel-dealse-site|hotele-site|hotelse-site|incest|insurance-quotesdeals-4u|insurancedeals-4u|jrcreations|levitra|macinstruct|mortgage-4-u|mortgagequotes|online-gambling|onlinegambling-4u|ottawavalleyag|ownsthis|palm-texas-holdem-game|paxil|penis|pharmacy|phentermine|poker-chip|poze|pussy|rental-car-e-site|ringtones|roulette |shemale|shoes|slot-machine|texas-holdem|thorcarlson|top-site|top-e-site|tramadol|trim-spa|ultram|valeofglamorganconservatives|viagra|vioxx|xanax|zolus)\b [NC]
+# RewriteRule .* /error/spam.html [L]
+#</IfModule>
+
+#############END - VERIFIFY ALL THAT - CUSTOMER ALEXON BALANGUE################
+#AESECURE_BADBOTS_END
+#AESECURE_BLOCK_COMPONENTS_START
+#AESECURE_BLOCK_COMPONENTS_END
+
+# Disable Server Signature, be sure that PHP version number won't be transmitted
+#ServerSignature Off # use already on h5bp
+# -------------------------------------------------------------------------
+# -------------- IE aka Immonde Explorateur (Awful explorer)  -------------
+# -------------------------------------------------------------------------
+
+# Always force latest IE rendering engine (even in intranet) & Chrome Frame
+# Read http://www.1stwebdesigner.com/design/snippets-html5-boilerplate/; X-UA-Compatible chapter
+#<IfModule mod_headers.c> 
+# <IfModule mod_setenvif.c>
+#    BrowserMatch MSIE ie
+#    Header set X-UA-Compatible "IE=Edge,chrome=1"# very older
+    # mod_headers can't match by content-type, but we don't want to send this header on *everything*...
+#    <FilesMatch "\.(js|css|gif|png|jpe?g|webp|pdf|xml|oga|ogg|m4a|ogv|mp4|m4v|webm|svg|svgz|eot|ttf|otf|woff2?|ico|webp|appcache|manifest|htc|crx|xpi|safariextz|vcf)$" >
+#      Header unset X-UA-Compatible
+#    </FilesMatch>
+# </IfModule>
+#</IfModule>
+
+# -------------------------------------------------------------------------
+# --------------------------- Site optimization ---------------------------
+# -------------------------------------------------------------------------
+
+#AESECURE_HOTLINKING_START
+#AESECURE_HOTLINKING_END
+
+#<IfModule mod_rewrite.c># maybe
+ # Browsers trying to access to the site favicon from a bad locations...  This will generate 404 pages
+ # and entries in logfiles; avoid this. Redirect to the good file
+ #--- Commented because need to first verify if the querystring points to favicon or not.
+ #--- need to verify too the existence of the /templates/favicon.ico file first
+ #RewriteCond %{REQUEST_URI} !^/favicon\.ico [NC]
+ #RewriteCond %{REQUEST_URI} favicon\.ico    [NC]
+ #RewriteRule (.*) http://%{HTTP_HOST}/templates/favicon.ico [R=301,L]
+#</IfModule>
+
+#AESECURE_WITHORNOTWWW_START - not neccessary
+#AESECURE_WITHORNOTWWW_END
+
+# Everything will be, by default, in utf-8, in French - not neccessary
+#AddDefaultCharset UTF-8
+#DefaultLanguage fr-FR
+
+#<IfModule mod_mime.c> # - not neccessary h5bp use already
+# AddType image/svg+xml .svg .svgz .svg.gz
+# AddType application/x-gzip .gz .gzip
+# AddType text/css .css.gz
+# AddType text/html .html.gz .htm.gz
+# AddType image/x-icon .ico.gz .icon.gz
+# AddType text/plain .txt.gz
+# AddType text/json .json.gz
+# AddType text/xml .xml.gz
+# AddType application/xslt+xml .xsl.gz
+# AddType application/javascript .js.gz
+# AddCharset utf-8 .atom .css .js .json .rss .xml .css.gz .htm.gz .html.gz .js.gz .xml.gz
+#</IfModule>
+
+#AESECURE_PAGESPEED_START - Soon add later etc
+#AESECURE_PAGESPEED_END
+#AESECURE_EXPIREBYTYPE_START
+#AESECURE_EXPIREBYTYPE_END
+#AESECURE_MINIFY_START
+#AESECURE_MINIFY_END
+#AESECURE_BOTSNOARCHIVE_START
+#AESECURE_BOTSNOARCHIVE_END
+#AESECURE_BLOCKROBOTSTXT_START
+#AESECURE_BLOCKROBOTSTXT_END
+
+## force the latest IE version, in various cases when it may fall back to IE7 mode
+## github.com/rails/rails/commit/123eb25#commitcomment-118920
+## Use ChromeFrame if it's installed for a better experience for the poor IE folk
+#<IfModule mod_headers.c> # not neccessary h5bp use already
+
+  # Just for the fun, doesn't have any impact.
+#  Header set Protected-by "aesecure (c) Christophe Avonture"
+
+  # In case of, remove the X-Powered-By which reveal the PHP version number running on the server
+#  Header unset X-Powered-By
+
+  # Disable ETags (French explanations : http://www.takeitweb.fr/blog/configurer-etags.html)
+#  Header unset ETag
+#  FileEtag None
+
+#</IfModule>
+
+#<IfModule mod_headers.c># not neccessary i add this function
+ ## Because X-UA-Compatible isn't sent to non-IE (to save header bytes),
+ ## We need to inform proxies that content changes based on UA
+# Header append Vary User-Agent
+ ## Cache control is set only if mod_headers is enabled, so that's unncessary to declare
+#</IfModule>
+
+#AESECURE_REDIRECTIONS_START
+#AESECURE_REDIRECTIONS_END
+
+# Include your manual changes here below
+#AESECURE_OLDHTACCESS_START
+#AESECURE_OLDHTACCESS_END
+
+#AESECURE_REWRITE_START
+#aeSecure 7.1
+<IfModule mod_rewrite.c>
+
+ RewriteEngine On
+
+ # Joomla! core SEF Section
+ # Workaround for HTTP authorization in CGI environment
+ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+ # If the requested path and file is not /index.php and the request
+ # has not already been internally rewritten to the index.php script
+ RewriteCond %{REQUEST_URI} !^/index\.php
+
+ # and the request is for something within the component folder,
+ # or for the site root, or for an extensionless URL, or the
+ # requested URL ends with one of the listed extensions
+ RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|vcf|raw))$ [NC]
+
+ # Never rewrite for existing files, directories and links
+ RewriteCond %{REQUEST_FILENAME} !-f
+ RewriteCond %{REQUEST_FILENAME} !-d
+ RewriteCond %{REQUEST_FILENAME} !-l
+
+ # internally rewrite the request to the index.php script
+ RewriteRule .* index.php [L]
+
+</IfModule>
+#AESECURE_REWRITE_END
 
 #BLOCK PROXY VISITS
 <IfModule mod_rewrite.c>
@@ -116,7 +603,11 @@ RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506
 	ErrorDocument 501 /error/501.html
 	ErrorDocument 502 /error/502.html
 	ErrorDocument 503 /error/503.html
+	ErrorDocument 504 /error/504.html
 	ErrorDocument 506 /error/506.html	
+
+#h5bp	
+
 # Send the CORS header for images when browsers request it.
 <IfModule mod_setenvif.c>
     <IfModule mod_headers.c>
@@ -148,6 +639,9 @@ Options -MultiViews
     <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ico|jpe?g|js|json(ld)?|m4[av]|manifest|map|mp4|oex|og[agv]|opus|otf|pdf|png|rdf|rss|safariextz|svgz?|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xml|xpi)$">
         Header unset X-UA-Compatible
     </FilesMatch>
+	<IfModule mod_setenvif.c>
+		BrowserMatch MSIE ie
+	</IfModule>
 
 # Allow cookies to be set from iframes in Internet Explorer.
      Header set P3P "policyref=\"/w3c/p3p.xml\", CP=\"IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT\""
@@ -280,7 +774,7 @@ AddDefaultCharset utf-8
     # (1): Turn on the rewrite engine (this is necessary in order for the `RewriteRule` directives to work).
     RewriteEngine On
     # (2): Enable the `FollowSymLinks` option if it isn't already.
-    Options +FollowSymlinks
+    Options +FollowSymlinks #OR Options +FollowSymLinks -Indexes
     # (3): If your web host doesn't allow the `FollowSymlinks` option, you need to comment it out or remove it, and then uncomment the `Options +SymLinksIfOwnerMatch` line (4), but be aware of the performance impact.
     # Options +SymLinksIfOwnerMatch
     # (4): Some cloud hosting services will require you set `RewriteBase`.
@@ -321,6 +815,7 @@ AddDefaultCharset utf-8
     RewriteCond %{SCRIPT_FILENAME} -d [OR]
     RewriteCond %{SCRIPT_FILENAME} -f
     RewriteRule "(^|/)\." - [F]
+    #RewriteRule "(^|/)\." /error/noaccess-folder-url.html [L] #if you prefered message indication uncomment it
 
 # Filename-based cache busting
      RewriteEngine On
@@ -392,7 +887,7 @@ AddDefaultCharset utf-8
     <IfModule mod_mime.c>
         AddEncoding gzip              svgz
     </IfModule>
-	#http://httpd.apache.org/docs/current/mod/mod_deflate.html - add | not sure
+	#http://httpd.apache.org/docs/current/mod/mod_deflate.html - add | work tested apache 2.4.20
 	# Drop problematic browsers
 	BrowserMatch ^Mozilla/4 gzip-only-text/html
 	BrowserMatch ^Mozilla/4\.0[678] no-gzip
@@ -482,11 +977,11 @@ Options +FollowSymlinks
 Options -Indexes
 
 RewriteEngine On
-RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
-RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
-RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
-RewriteRule .* index.php [F]
+#RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
+#RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+#RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+#RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+#RewriteRule .* index.php [F]
 # RewriteBase /
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteCond %{REQUEST_URI} !^/index\.php

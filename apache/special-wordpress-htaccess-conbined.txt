@@ -13,7 +13,7 @@
 #DirectoryIndex index.php index.html /index.php
 
 # DENY ACCESS TO PROTECTED SERVER FILES AND FOLDERS
-RedirectMatch 403 \.(htaccess|htpasswd|errordocs|logs)$
+#RedirectMatch 403 \.(htaccess|htpasswd|errordocs|logs)$
 
 # WP-ADMIN/INCLUDES
 # Use BPS Custom Code to remove this code permanently.
@@ -80,11 +80,11 @@ RewriteCond %{HTTP_REFERER} ^.*atelier-carpentier.com.*
 RewriteRule . - [S=1]
 
 # BEGIN BPSQSE BPS QUERY STRING EXPLOITS
-# The libwww-perl User Agent is forbidden - Many bad bots use libwww-perl modules, but some good bots use it too.
-RewriteCond %{HTTP_USER_AGENT} (havij|libwww-perl|wget|python|nikto|curl|scan|java|winhttp|clshttp|loader) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} (;|<|>|'|"|\)|\(|%0A|%0D|%22|%27|%28|%3C|%3E|%00).*(libwww-perl|wget|python|nikto|curl|scan|java|winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC,OR]
-RewriteCond %{THE_REQUEST} (\?|\*|%2a)+(%20+|\\s+|%20+\\s+|\\s+%20+|\\s+%20+\\s+)HTTP(:/|/) [NC,OR]
+# The libwww-perl User Agent is forbidden - Many bad bots use libwww-perl modules, but some #good bots use it too.
+#RewriteCond %{HTTP_USER_AGENT} (havij|libwww-perl|wget|python|nikto|curl|scan|java|winhttp|clshttp|loader) [NC,OR]
+#RewriteCond %{HTTP_USER_AGENT} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+#RewriteCond %{HTTP_USER_AGENT} (;|<|>|'|"|\)|\(|%0A|%0D|%22|%27|%28|%3C|%3E|%00).*(libwww-perl|wget|python|nikto|curl|scan|java|winhttp|HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) [NC,OR]
+#RewriteCond %{THE_REQUEST} (\?|\*|%2a)+(%20+|\\s+|%20+\\s+|\\s+%20+|\\s+%20+\\s+)HTTP(:/|/) [NC,OR]
 RewriteCond %{THE_REQUEST} etc/passwd [NC,OR]
 RewriteCond %{THE_REQUEST} cgi-bin [NC,OR]
 RewriteCond %{THE_REQUEST} (%0A|%0D|\\r|\\n) [NC,OR]
@@ -103,18 +103,22 @@ RewriteCond %{QUERY_STRING} https\: [NC,OR]
 RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
 RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
 RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
-RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (\<|%3C).*embed.*(\>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (<|%3C)([^e]*e)+mbed.*(>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (\<|%3C).*object.*(\>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (<|%3C)([^o]*o)+bject.*(>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR] 
-RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
-RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
-RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
-RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+
+#move to aesecure
+#RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+#RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+#RewriteCond %{QUERY_STRING} (\<|%3C).*embed.*(\>|%3E) [NC,OR]
+#RewriteCond %{QUERY_STRING} (<|%3C)([^e]*e)+mbed.*(>|%3E) [NC,OR]
+#RewriteCond %{QUERY_STRING} (\<|%3C).*object.*(\>|%3E) [NC,OR]
+#RewriteCond %{QUERY_STRING} (<|%3C)([^o]*o)+bject.*(>|%3E) [NC,OR]
+#RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+#RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR] 
+#use already to aesecure
+#RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+#RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
+#RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+#RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+
 RewriteCond %{QUERY_STRING} ^.*(\(|\)|<|>|%3c|%3e).* [NC,OR]
 RewriteCond %{QUERY_STRING} ^.*(\x00|\x04|\x08|\x0d|\x1b|\x20|\x3c|\x3e|\x7f).* [NC,OR]
 RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
@@ -142,14 +146,15 @@ Deny from all
 #Allow from x.x.x.x #your ip address
 </FilesMatch>
 
-<FilesMatch "!^(post\.php)">
-	<IfModule mod_headers.c>
-		# Protects against Drive-by Download attacks
-		# Protects against MIME/Content/Data sniffing
-		Header set X-Content-Type-Options nosniff
-		Header always append X-Frame-Options SAMEORIGIN
-	</IfModule>
-</FilesMatch>
+#not need to add already use on h5bp
+#<FilesMatch "!^(post\.php)">
+#	<IfModule mod_headers.c>
+#		# Protects against Drive-by Download attacks
+#		# Protects against MIME/Content/Data sniffing
+#		Header set X-Content-Type-Options nosniff
+#		Header always append X-Frame-Options SAMEORIGIN
+#	</IfModule>
+#</FilesMatch>
 
 #default wordpress rewrite
 #<IfModule mod_rewrite.c>

@@ -17,6 +17,8 @@ http://www.aesecure.com (Free and paid not complete secure)=i tell you not recom
 
 https://perishablepress.com/ultimate-htaccess-blacklist/ (100% Free tuto good idea completed and testing all that)
 
+http://stopmalvertising.com/security/securing-your-website-with-.htaccess/all-pages.html (interesse docs)
+
 https://github.com/h5bp (free need to verify the compatible under licences MIT)
 
 for instant apache 2.4+ works but nginx i'm not yet apply works well the variable, how use?!
