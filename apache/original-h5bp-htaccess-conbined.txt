@@ -206,7 +206,7 @@ AddDefaultCharset utf-8
     RewriteCond %{SCRIPT_FILENAME} -d [OR]
     RewriteCond %{SCRIPT_FILENAME} -f
     RewriteRule "(^|/)\." - [F]
-    #RewriteRule "(^|/)\." /warning/ [L] #if you prefered message indication uncomment it
+    #RewriteRule "(^|/)\." /warning/noaccess-folder-url.html [L] #if you prefered message indication uncomment it
 
 # Filename-based cache busting
      RewriteEngine On
