@@ -27,10 +27,17 @@ RewriteRule ^warning/easter-eggs\.html$ index.php?full=hosting&hacker=easter-egg
 RewriteRule ^warning/detected-base64-encode\.html$ index.php?full=hosting&hacker=detected-base64-encode [L]
 RewriteRule ^warning/local-files\.html$ index.php?full=hosting&hacker=local-files [L]
 RewriteRule ^warning/spam\.html$ index.php?full=hosting&hacker=spam [L]
+RewriteRule ^warning/noaccess-folder-url\.html$ index.php?full=hosting&hacker=noaccess-folder-url [L]
+RewriteRule ^warning/create-ghosts-users\.html$ index.php?full=hosting&hacker=create-ghosts-users [L]
+RewriteRule ^warning/filter-shell\.html$ index.php?full=hosting&hacker=filter-shell [L]
+RewriteRule ^warning/query-string\.html$ index.php?full=hosting&hacker=query-string [L]
+RewriteRule ^warning/sql-injection\.html$ index.php?full=hosting&hacker=sql-injection [L]
+RewriteRule ^warning/global-request\.html$ index.php?full=hosting&hacker=global-request [L]
+RewriteRule ^warning/request-http\.html$ index.php?full=hosting&hacker=request-http [L]
 RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
 RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
 RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
 RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
 RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
-RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=--
+RewriteRule ^warning/--\.html$ index.php?full=hosting&hacker=-- [L]
 
