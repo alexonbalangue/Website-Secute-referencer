@@ -92,7 +92,7 @@
 #aeSecure 1.3
 # Disable errors and warnings; don't allow the user to see them but redirect them into a logfile
 # not supported with PHP 7/+
-#<IfModule mod_php5.c>
+#<IfModule mod_php5.c>#prefered on php.ini or your host panel Plesk/Cpanel much better
 # php_flag display_errors off
 # php_flag log_errors on
 # php_value track_errors on
@@ -104,7 +104,7 @@
 #or not neccessary if you use plesk with vps or dedicated server
  # Be sure that these php.ini variables are correctly initialized
 # php_value register_globals off
-
+#prefered on php.ini or your host panel Plesk/Cpanel much better
  # Disable magic_quotes (if not yet done in httpd.conf)
 # php_flag magic_quotes_runtime off
 # php_flag magic_quotes_sybase off
@@ -403,12 +403,12 @@ RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
  #RewriteRule (.*) http://%{HTTP_HOST}/templates/favicon.ico [R=301,L]
 #</IfModule>
 
-#AESECURE_WITHORNOTWWW_START - not neccessary
+#AESECURE_WITHORNOTWWW_START - not neccessary h5bp use already
 #AESECURE_WITHORNOTWWW_END
 
-# Everything will be, by default, in utf-8, in French - not neccessary
+# Everything will be, by default, in utf-8, in French - not neccessary h5bp use already
 #AddDefaultCharset UTF-8
-#DefaultLanguage fr-FR
+#DefaultLanguage fr-FR #not need
 
 #<IfModule mod_mime.c> # - not neccessary h5bp use already
 # AddType image/svg+xml .svg .svgz .svg.gz
@@ -700,7 +700,7 @@ ServerSignature Off
 
 # Prevent Apache from sending in the `Server` response header its exact version number, the description of the generic OS-type or information about its compiled-in modules.
 # (!) The `ServerTokens` directive will only work in the main server configuration file, so don't try to enable it in the `.htaccess` file!
-#ServerTokens Prod #not recommended to uncomment this for testing
+#ServerTokens Prod #not recommended to uncomment this for testing if your apache using already
 
 # Serve all resources labeled as `text/html` or `text/plain`
 # with the media type `charset` parameter set to `UTF-8`.
@@ -804,11 +804,22 @@ AddDefaultCharset utf-8
      RewriteCond %{HTTPS} !=on
      RewriteCond %{HTTP_HOST} !^www\. [NC]
      RewriteCond %{SERVER_ADDR} !=127.0.0.1
+
      #RewriteCond %{SERVER_ADDR} !=127.0.0.1 #dedicated address ipv4 of your domain name
      RewriteCond %{SERVER_ADDR} !=::1
      #RewriteCond %{SERVER_ADDR} !=::1 #dedicated address ipv6 of your domain name
      RewriteRule ^ %{ENV:PROTO}://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-	 
+# Option 3: With CloudFlare
+# If CloudFlare headers are not set, rewrite bare domain to 'www':
+   # RewriteCond %{HTTP:CF-Visitor} !scheme
+   # RewriteCond %{HTTP_HOST} ^[^.]+\..{2,6}$
+	# If CloudFlare headers are set, rewrite bare domain to 'www' via SSL:
+   # RewriteCond %{HTTP:CF-Visitor} scheme
+   # RewriteCond %{HTTP_HOST} ^[^.]+\..{2,6}$
+	 # If CloudFlare headers are set, rewrite non-SSL to SSL:
+   # RewriteCond %{HTTP:CF-Visitor} '"scheme":"http"'
+	#RewriteRule ^ %{ENV:PROTO}://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+   
 # Block access to all hidden files and directories with the exception of the visible content from within the `/.well-known/` hidden directory (eg: git/svn).
     RewriteEngine On
     RewriteCond %{REQUEST_URI} "!(^|/)\.well-known/([^./]+./?)+$" [NC]
