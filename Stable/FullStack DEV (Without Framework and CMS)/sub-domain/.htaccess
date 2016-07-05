@@ -1,3 +1,8 @@
+##############################################################
+#
+#		Source Cpanel Generator edit by Alexonbalangue.me (Freedom free)
+#
+##############################################################
 <IfModule mod_rewrite.c>
 RewriteEngine on
 #Error custom
@@ -108,6 +113,11 @@ RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 	 #RewriteCond %{HTTP_REFERER}             !(.*)allowed-proxy-03.domain.tld(.*)
 	 RewriteRule ^(.*)$ - [F]
 </IfModule>
+##############################################################
+#
+#		Source from H5bp - Apache config
+#
+##############################################################
 # Send the CORS header for images when browsers request it.
 <IfModule mod_setenvif.c>
     <IfModule mod_headers.c>

@@ -10,4 +10,4 @@ Taken exemple Wamp Server:
 goes C:\wamp64\bin\apache\apache2.4.20\conf\extra (x64b) or C:\wamp\bin\apache\apache2.4.20\conf\extra (x32b)
 
 __
-Click the icon wamp server 3.0.4 -> PHP -> php.ini and copy from here to on your php.ini if you use x64 (i'm x64bits Microsoft 10)
+Click the icon wamp server 3.0.4 -> PHP -> php.ini and edit mod production
