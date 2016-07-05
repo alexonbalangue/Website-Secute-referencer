@@ -1,5 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
+#Error custom
 RewriteRule ^error/400\.html$ blocker/index.php?full=pages&error=400 [L]
 RewriteRule ^error/401\.html$ blocker/index.php?full=pages&error=401 [L]
 RewriteRule ^error/403\.html$ blocker/index.php?full=pages&error=403 [L]
@@ -16,7 +17,23 @@ RewriteRule ^error/501\.html$ blocker/index.php?full=pages&error=501 [L]
 RewriteRule ^error/502\.html$ blocker/index.php?full=pages&error=502 [L]
 RewriteRule ^error/503\.html$ blocker/index.php?full=pages&error=503 [L]
 RewriteRule ^error/504\.html$ blocker/index.php?full=pages&error=504 [L]
-RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506 
+RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506 [L] 
+
+#Preventif security warning
+RewriteRule ^error/block-files\.html$ blocker/index.php?full=hosting&hacker=block-files [L]
+RewriteRule ^error/easter-eggs\.html$ blocker/index.php?full=hosting&hacker=easter-eggs [L]
+RewriteRule ^error/detected-base64-encode\.html$ blocker/index.php?full=hosting&hacker=detected-base64-encode [L]
+RewriteRule ^error/local-files\.html$ blocker/index.php?full=hosting&hacker=local-files [L]
+RewriteRule ^error/spam\.html$ blocker/index.php?full=hosting&hacker=spam [L]
+RewriteRule ^error/noaccess-folder-url\.html$ blocker/index.php?full=hosting&hacker=noaccess-folder-url [L]
+RewriteRule ^error/create-ghosts-users\.html$ blocker/index.php?full=hosting&hacker=create-ghosts-users [L]
+RewriteRule ^error/filter-shell\.html$ blocker/index.php?full=hosting&hacker=filter-shell [L]
+RewriteRule ^error/query-string\.html$ blocker/index.php?full=hosting&hacker=query-string [L]
+RewriteRule ^error/sql-injection\.html$ blocker/index.php?full=hosting&hacker=sql-injection [L]
+RewriteRule ^error/global-request\.html$ blocker/index.php?full=hosting&hacker=global-request [L]
+RewriteRule ^error/request-http\.html$ blocker/index.php?full=hosting&hacker=request-http [L]
+#RewriteRule ^error/hotlinking\.html$ blocker/index.php?full=hosting&hacker=hotlinking [L]
+RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 </IfModule>
 	ErrorDocument 400 /error/400.html
 	ErrorDocument 401 /error/401.html
@@ -34,6 +51,7 @@ RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506
 	ErrorDocument 501 /error/501.html
 	ErrorDocument 502 /error/502.html
 	ErrorDocument 503 /error/503.html
+	ErrorDocument 504 /error/504.html
 	ErrorDocument 506 /error/506.html
 
 
@@ -71,7 +89,7 @@ RewriteRule ^error/506\.html$ blocker/index.php?full=pages&error=506
 	RewriteCond %{HTTP_REFERER} !^https?://([^.]+\.)?baidu.com [NC]
 	RewriteCond %{HTTP_REFERER}  !search\?q=cache               [NC]
 	RewriteCond %{HTTP_REFERER}  !google\.                      
-	RewriteRule \.(gif|jpe?g?|png|bmp|avi|mp4|flv|pls|m3u|asx|xspf|qtl)$ http://developper.sites.alexonbalangue.me/blocked.jpg [NC,R,L]
+	RewriteRule \.(gif|jpe?g?|png|bmp|avi|mp4|flv|pls|m3u|asx|xspf|qtl)$ http://developper.sites.alexonbalangue.me/error/hotlinking.html [NC,R,L]
 	 RewriteEngine on
 	 RewriteCond %{HTTP:VIA}                 !^$ [OR]
 	 RewriteCond %{HTTP:FORWARDED}           !^$ [OR]

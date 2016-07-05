@@ -1,0 +1,1 @@
+All you need here is a stable version already testing for finaly validad my testing first on my local hosting use with wampserver latest version. http://developper.sites.alexonbalangue.me/ 

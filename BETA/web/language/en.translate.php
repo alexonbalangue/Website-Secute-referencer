@@ -43,6 +43,8 @@ $lang['error_506_desc'] = 'A variant for the requested entity is itself a negoti
 
 $lang['hacker_blockfile_title'] = 'Accès un fichier non autoris&eacute;'; 
 $lang['hacker_blockfile_desc'] = 'Tentative d\'accès à un fichier dont l\'accès est strictement interdit depuis une URL'; 
+$lang['hacker_eastereggs_title'] = 'eastereggs'; 
+$lang['hacker_eastereggs_desc'] = 'eastereggs'; 
 $lang['hacker_detectedbase64encode_title'] = 'base64 encoded'; 
 $lang['hacker_detectedbase64encode_desc'] = 'base64_encode détecté dans l\'URL'; 
 $lang['hacker_localfiles_title'] = 'liste noire'; 
