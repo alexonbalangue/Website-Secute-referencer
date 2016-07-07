@@ -489,8 +489,8 @@ AddDefaultCharset utf-8
 
 <IfModule mod_rewrite.c>
 	RewriteEngine On
-	RewriteCond %{REQUEST_FILENAME} (boot.ini|htaccess.txt|install.mysql)$ [NC,OR]
-	RewriteCond %{QUERY_STRING} (boot.ini|htaccess.txt|install.mysql).*$ [NC,OR]
+	RewriteCond %{REQUEST_FILENAME} (boot.ini|htaccess.txt|readme.html|install.mysql)$ [NC,OR]
+	RewriteCond %{QUERY_STRING} (boot.ini|htaccess.txt|readme.html|install.mysql).*$ [NC,OR]
 	RewriteCond %{REQUEST_FILENAME} (install.pgsql|install.sql|php.ini|phpinfo.php)$ [NC,OR]
 	RewriteCond %{QUERY_STRING} (install.pgsql|install.sql|php.ini|phpinfo.php).*$ [NC,OR]
 	RewriteCond %{REQUEST_FILENAME} (htaccess_bak|error_logs|access_logs)$ [NC,OR]
@@ -532,9 +532,9 @@ AddDefaultCharset utf-8
 	RewriteCond %{QUERY_STRING} .*(\&lt;script).* [NC] 
 	RewriteRule .* - [F]	
 	
-	#RewriteEngine On	
-	#RewriteCond %{REQUEST_METHOD} (GET|POST) [NC] #if/isset/_GET = bug error 403
-	#RewriteRule .* - [F]	
+	RewriteEngine On	
+	RewriteCond %{REQUEST_METHOD} (GET|POST) [NC] #if/isset/_GET = bug error 403
+	RewriteRule .* - [F]	
 
 	RewriteEngine On
 	RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
@@ -556,14 +556,15 @@ AddDefaultCharset utf-8
 	RewriteRule .* /error/local-files.html [L]
  
 	RewriteEngine On	
-	#RewriteCond %{QUERY_STRING} ^.*(;|<|>|'|"|\)|%0A|%0D|%22|%25|%27|%3C|%3E|%00).*(/\*|union|select|insert|cast|declare|drop|update|md5|benchmark).* [NC,OR]
-	#RewriteCond %{QUERY_STRING} ^.*(%20)?([(])?(union|select|insert|cast|declare|group_concat|drop|update|md5|benchmark)%20.* [NC,OR] 
-	#RewriteCond %{QUERY_STRING} ^.*(%20|\+)(AND|OR)(%20|\+).* [NC,OR] 
-	#RewriteCond %{QUERY_STRING} ^.*(%20|\+)ORDER(%20|\+).* [NC,OR] 
-	#RewriteCond %{QUERY_STRING} ^.*%201\=1.* [NC] 
-	#RewriteRule .* /joomla/aesecure/accessdenied.php?s=682 [L] # why add this
+	RewriteCond %{QUERY_STRING} ^.*(;|<|>|'|"|\)|%0A|%0D|%22|%25|%27|%3C|%3E|%00).*(/\*|union|select|insert|cast|declare|drop|update|md5|benchmark).* [NC,OR]
+	RewriteCond %{QUERY_STRING} ^.*(%20)?([(])?(union|select|insert|cast|declare|group_concat|drop|update|md5|benchmark)%20.* [NC,OR] 
+	RewriteCond %{QUERY_STRING} ^.*(%20|\+)(AND|OR)(%20|\+).* [NC,OR] 
+	RewriteCond %{QUERY_STRING} ^.*(%20|\+)ORDER(%20|\+).* [NC,OR] 
+	RewriteCond %{QUERY_STRING} ^.*%201\=1.* [NC] 
+	RewriteRule .* /joomla/aesecure/accessdenied.php?s=682 [L] # why add this
+	RewriteCond %{QUERY_STRING} .*wp_.*  [NC] #default prefix of Wordpress is not automate generator prefix
 	#RewriteCond %{QUERY_STRING} .*prefixsql_.*  [NC]
-	#RewriteRule .* /error/sql-injection.html [L]
+	RewriteRule .* /error/sql-injection.html [L]
  
 	RewriteEngine On	
 	RewriteCond %{QUERY_STRING} ^.*(<|>|'|%0A|%0D|%25|%27|%3C|%3E|%00).* [NC,OR]
@@ -633,6 +634,41 @@ AddDefaultCharset utf-8
 </IfModule>
 
 
+##############################################################
+#
+#		Source from Bulletproof security|Wordpress - free version
+
+#
+##############################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
 
 
 
