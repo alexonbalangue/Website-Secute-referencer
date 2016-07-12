@@ -80,7 +80,7 @@ RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 #	php_flag display_errors off
 #	php_flag log_errors on
 #	php_value track_errors on
-#	php_value error_log aesecure/logs/error.log
+#	php_value error_log blocker/logs/error.log
 #	php_value register_globals off
 #	php_flag magic_quotes_runtime off
 #	php_flag magic_quotes_sybase off
@@ -574,6 +574,7 @@ AddDefaultCharset utf-8
 	
 	RewriteEngine On	
 	RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
+	RewriteCond %{QUERY_STRING} (globals|encode|localhost|loopback|127\.0\.0\.1) [NC,OR]	
 	RewriteRule .* - [F]	
 
 	RewriteEngine On
@@ -582,7 +583,7 @@ AddDefaultCharset utf-8
 	RewriteRule .* /error/detected-base64-encode.html [L]	
 	
 	RewriteEngine On
-	RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK) [NC]
+	RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK|DEBUG) [NC]
 	RewriteCond %{HTTP_REFERER} !(www\.)?pingdom\.com/ [NC]
 	RewriteCond %{HTTP_REFERER} !(www\.)?uptimerobot\.com/ [NC]
 	RewriteCond %{HTTP_REFERER} !http://validator\.w3\.org/ [NC]
@@ -782,3 +783,57 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule .* index.php [L]
 #
 ## End - Joomla! core SEF Section.
+
+
+##############################################################
+#
+#		Source from Bulletproof security & All In One|Wordpress - free version
+
+#
+##############################################################
+	RewriteEngine On	
+	RewriteCond %{THE_REQUEST} etc/passwd [NC,OR]
+	RewriteCond %{THE_REQUEST} cgi-bin [NC,OR]
+	RewriteCond %{THE_REQUEST} (%0A|%0D|\\r|\\n) [NC,OR]
+	RewriteCond %{REQUEST_URI} owssvr\.dll [NC,OR]
+	RewriteCond %{HTTP_REFERER} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+	RewriteCond %{HTTP_REFERER} \.opendirviewer\. [NC,OR]
+	RewriteCond %{HTTP_REFERER} users\.skynet\.be.* [NC,OR]
+	RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [NC,OR]
+	RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [NC,OR]
+	RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+	RewriteCond %{QUERY_STRING} (\.\./|%2e%2e%2f|%2e%2e/|\.\.%2f|%2e\.%2f|%2e\./|\.%2e%2f|\.%2e/) [NC,OR]
+	RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
+	RewriteCond %{QUERY_STRING} http\: [NC,OR]
+	RewriteCond %{QUERY_STRING} https\: [NC,OR]
+	RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
+	RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+	RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+	RewriteCond %{QUERY_STRING} ^.*(\(|\)|<|>|%3c|%3e).* [NC,OR]
+	RewriteCond %{QUERY_STRING} ^.*(\x00|\x04|\x08|\x0d|\x1b|\x20|\x3c|\x3e|\x7f).* [NC,OR]
+	RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
+	RewriteCond %{QUERY_STRING} (\.{1,}/)+(motd|etc|bin) [NC,OR]
+	
+	RewriteCond %{HTTP_REFERER} ([a-z0-9]{2000}) [NC,OR]
+	RewriteCond %{HTTP_REFERER} (semalt.com|todaperfeita) [NC]
+	RewriteCond %{REQUEST_METHOD} ^(connect|debug|delete|move|put|trace|track) [NC]
+	RewriteRule .* - [F]	
+
+#<FilesMatch "^(configuration\.php)">
+#	Order Allow,Deny
+#	#Allow from www.exemple.tld
+#	#Allow from x.x.x.x
+#	#Allow from x.x.x.x
+#	#Allow from x.x.x.x
+#	Deny from all
+#</FilesMatch>
+
+#Not sure this config
+#<Files "^(.htaccess|configuration.php|debug.log)">
+#	Order Allow,Deny
+#	Deny from all
+#	#Satisfy all	#if you had bug add this or separeted variable Files
+#</Files>
+
+
+
