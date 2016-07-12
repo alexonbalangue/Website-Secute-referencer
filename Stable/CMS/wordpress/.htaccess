@@ -96,6 +96,7 @@ RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 	RewriteCond %{HTTP_REFERER}  !google\.                      
 	RewriteRule \.(gif|jpe?g?|png|bmp|avi|mp4|flv|pls|m3u|asx|xspf|qtl)$ http://developper.sites.alexonbalangue.me/error/hotlinking.html [NC,R,L]
 	 RewriteEngine on
+	 RewriteCond %{REQUEST_METHOD} ^POST
 	 RewriteCond %{HTTP:VIA}                 !^$ [OR]
 	 RewriteCond %{HTTP:FORWARDED}           !^$ [OR]
 	 RewriteCond %{HTTP:USERAGENT_VIA}       !^$ [OR]
@@ -503,7 +504,8 @@ AddDefaultCharset utf-8
 	RewriteEngine On
 	RewriteCond %{REQUEST_FILENAME} .*\.(phtm?l?|ash?x|aspx?|cfml?|cgi|pl|jsp|sql|bat)$ [NC,OR]
 	RewriteCond %{REQUEST_FILENAME} .*\.(bak|config|dll|exe|sql|ini|log|sh|inc|dist)$ [NC,OR]
-	RewriteCond %{REQUEST_FILENAME} .*\.(htaccess|htaccess_old|htpasswd|htaccess_bak|error_logs)$ [NC]
+	RewriteCond %{REQUEST_FILENAME} .*\.(htaccess|htaccess_old|htpasswd|htaccess_bak|error_logs|access_logs)$ [NC]
+	RewriteCond %{REQUEST_FILENAME} .*\.(error_log|access_log|debug_log)$ [NC]
 	RewriteCond %{SCRIPT_FILENAME} -f
 	RewriteRule .* /error/block-files.html [L]	
 	
@@ -530,10 +532,11 @@ AddDefaultCharset utf-8
 	RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR] 
 	RewriteCond %{QUERY_STRING} ((java)?script:).*(;).* [NC,OR]   
 	RewriteCond %{QUERY_STRING} .*(\&lt;script).* [NC] 
-	RewriteRule .* - [F]	
+	RewriteRule .* - [F]
 	
 	RewriteEngine On	
-	RewriteCond %{REQUEST_METHOD} (GET|POST) [NC] #if/isset/_GET = bug error 403
+	#RewriteCond %{REQUEST_METHOD} (GET|POST) [NC] #if/isset/_GET = bug error 403
+	RewriteCond %{QUERY_STRING} (globals|encode|localhost|loopback|127\.0\.0\.1) [NC,OR]
 	RewriteRule .* - [F]	
 
 	RewriteEngine On
@@ -542,7 +545,7 @@ AddDefaultCharset utf-8
 	RewriteRule .* /error/detected-base64-encode.html [L]	
 	
 	RewriteEngine On
-	RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK) [NC]
+	RewriteCond %{REQUEST_METHOD} ^(HEAD|TRACE|DELETE|TRACK|DEBUG) [NC]
 	RewriteCond %{HTTP_REFERER} !(www\.)?pingdom\.com/ [NC]
 	RewriteCond %{HTTP_REFERER} !(www\.)?uptimerobot\.com/ [NC]
 	RewriteCond %{HTTP_REFERER} !http://validator\.w3\.org/ [NC]
@@ -560,14 +563,18 @@ AddDefaultCharset utf-8
 	RewriteCond %{QUERY_STRING} ^.*(%20)?([(])?(union|select|insert|cast|declare|group_concat|drop|update|md5|benchmark)%20.* [NC,OR] 
 	RewriteCond %{QUERY_STRING} ^.*(%20|\+)(AND|OR)(%20|\+).* [NC,OR] 
 	RewriteCond %{QUERY_STRING} ^.*(%20|\+)ORDER(%20|\+).* [NC,OR] 
+	RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
+	RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
+	RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC,OR]
 	RewriteCond %{QUERY_STRING} ^.*%201\=1.* [NC] 
-	RewriteRule .* /joomla/aesecure/accessdenied.php?s=682 [L] # why add this
+	#RewriteRule .* /joomla/aesecure/accessdenied.php?s=682 [L] # why add this
 	RewriteCond %{QUERY_STRING} .*wp_.*  [NC] #default prefix of Wordpress is not automate generator prefix
 	#RewriteCond %{QUERY_STRING} .*prefixsql_.*  [NC]
 	RewriteRule .* /error/sql-injection.html [L]
  
 	RewriteEngine On	
 	RewriteCond %{QUERY_STRING} ^.*(<|>|'|%0A|%0D|%25|%27|%3C|%3E|%00).* [NC,OR]
+	RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|drop|delete|update|cast|create|char|convert|alter|declare|order|script|set|md5|benchmark|encode) [NC,OR]
 	RewriteCond %{QUERY_STRING} ^.*((\/\*)?\*\/).* [NC,OR]
 	RewriteCond %{QUERY_STRING} ^.*\|\|.* [NC]
 	#RewriteRule .* /error/query-string.html [L]
@@ -636,15 +643,53 @@ AddDefaultCharset utf-8
 
 ##############################################################
 #
-#		Source from Bulletproof security|Wordpress - free version
+#		Source from Bulletproof security & All In One|Wordpress - free version
 
 #
 ##############################################################
+	RewriteEngine On	
+	RewriteCond %{THE_REQUEST} etc/passwd [NC,OR]
+	RewriteCond %{THE_REQUEST} cgi-bin [NC,OR]
+	RewriteCond %{THE_REQUEST} (%0A|%0D|\\r|\\n) [NC,OR]
+	RewriteCond %{REQUEST_URI} owssvr\.dll [NC,OR]
+	RewriteCond %{HTTP_REFERER} (%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+	RewriteCond %{HTTP_REFERER} \.opendirviewer\. [NC,OR]
+	RewriteCond %{HTTP_REFERER} users\.skynet\.be.* [NC,OR]
+	RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [NC,OR]
+	RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [NC,OR]
+	RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+	RewriteCond %{QUERY_STRING} (\.\./|%2e%2e%2f|%2e%2e/|\.\.%2f|%2e\.%2f|%2e\./|\.%2e%2f|\.%2e/) [NC,OR]
+	RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
+	RewriteCond %{QUERY_STRING} http\: [NC,OR]
+	RewriteCond %{QUERY_STRING} https\: [NC,OR]
+	RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
+	RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+	RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+	RewriteCond %{QUERY_STRING} ^.*(\(|\)|<|>|%3c|%3e).* [NC,OR]
+	RewriteCond %{QUERY_STRING} ^.*(\x00|\x04|\x08|\x0d|\x1b|\x20|\x3c|\x3e|\x7f).* [NC,OR]
+	RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
+	RewriteCond %{QUERY_STRING} (\.{1,}/)+(motd|etc|bin) [NC,OR]
+	
+	RewriteCond %{HTTP_REFERER} ([a-z0-9]{2000}) [NC,OR]
+	RewriteCond %{HTTP_REFERER} (semalt.com|todaperfeita) [NC]
+	RewriteCond %{REQUEST_METHOD} ^(connect|debug|delete|move|put|trace|track) [NC]
+	RewriteRule .* - [F]	
 
+<FilesMatch "^(wp-login\.php|xmlrpc\.php|wp-config\.php|wp-cron\.php|wp-trackback\.php|wp-signup\.php)">
+	Order Allow,Deny
+	#Allow from www.exemple.tld
+	#Allow from x.x.x.x
+	#Allow from x.x.x.x
+	#Allow from x.x.x.x
+	Deny from all
+</FilesMatch>
 
-
-
-
+#Not sure this config
+<Files "^(.htaccess|wp-config.php|xmlrpc.php|debug.log)">
+	Order Allow,Deny
+	Deny from all
+	#Satisfy all	#if you had bug add this or separeted variable Files
+</Files>
 
 
 
