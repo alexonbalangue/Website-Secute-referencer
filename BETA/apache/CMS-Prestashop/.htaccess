@@ -10,7 +10,7 @@ SetEnv HTTP_MOD_REWRITE On
 RewriteEngine on
 
 
-#Domain: developper.sites.alexonbalangue.me
+#Domain: developper.sites.alexonbalangue.me/prestashop
 RewriteRule . - [E=REWRITEBASE:/ps/]
 RewriteRule ^api$ api/ [L]
 
@@ -38,17 +38,20 @@ RewriteRule ^.*$ - [NC,L]
 RewriteRule ^.*$ %{ENV:REWRITEBASE}index.php [NC,L]
 </IfModule>
 
-AddType application/vnd.ms-fontobject .eot
-AddType font/ttf .ttf
-AddType font/otf .otf
-AddType application/x-font-woff .woff
-<IfModule mod_headers.c>
-	<FilesMatch "\.(ttf|ttc|otf|eot|woff|svg)$">
-		Header add Access-Control-Allow-Origin "*"
-	</FilesMatch>
-</IfModule>
+
+
+#Not need
+#AddType application/vnd.ms-fontobject .eot
+#AddType font/ttf .ttf
+#AddType font/otf .otf
+#AddType application/x-font-woff .woff
+#<IfModule mod_headers.c>
+#	<FilesMatch "\.(ttf|ttc|otf|eot|woff|svg)$">
+#		Header add Access-Control-Allow-Origin "*"
+#	</FilesMatch>
+#</IfModule>
 
 #If rewrite mod isn't enabled
-ErrorDocument 404 /ps/index.php?controller=404
+#ErrorDocument 404 /ps/index.php?controller=404
 
 # ~~end~~ Do not remove this comment, Prestashop will keep automatically the code outside this comment when .htaccess will be generated again
