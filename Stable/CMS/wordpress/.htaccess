@@ -59,6 +59,36 @@ RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 	ErrorDocument 504 /error/504.html
 	ErrorDocument 506 /error/506.html
 
+##########################################################################################
+#				BEGIN - IF you need
+#########################################################################################
+##########Support with php 5.6.x <=
+#<IfModule mod_php5.c>
+#	PHP7not work
+#	php_flag display_errors off
+#	php_flag log_errors on
+#	php_value track_errors on
+#	php_value error_log aesecure/logs/error.log
+#	php_value register_globals off
+#	php_flag magic_quotes_runtime off
+#	php_flag magic_quotes_sybase off
+#	php_value date.timezone Europe/Paris
+#</IfModule>
+#<IfModule mod_php7.c>
+##########Support with php 7.x.0+
+#	PHP7not work
+#	php_flag display_errors off
+#	php_flag log_errors on
+#	php_value track_errors on
+#	php_value error_log blocker/logs/error.log
+#	php_value register_globals off
+#	php_flag magic_quotes_runtime off
+#	php_flag magic_quotes_sybase off
+#	php_value date.timezone Europe/Paris
+#########################################################################################
+#				END - if you need
+##########################################################################################
+	
 
 #Generator from Cpanel and edit that later using sinces 2009 years ago - and ameliorate.
 <IfModule mod_rewrite.c>
@@ -96,7 +126,6 @@ RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 	RewriteCond %{HTTP_REFERER}  !google\.                      
 	RewriteRule \.(gif|jpe?g?|png|bmp|avi|mp4|flv|pls|m3u|asx|xspf|qtl)$ http://developper.sites.alexonbalangue.me/error/hotlinking.html [NC,R,L]
 	 RewriteEngine on
-	 RewriteCond %{REQUEST_METHOD} ^POST
 	 RewriteCond %{HTTP:VIA}                 !^$ [OR]
 	 RewriteCond %{HTTP:FORWARDED}           !^$ [OR]
 	 RewriteCond %{HTTP:USERAGENT_VIA}       !^$ [OR]
@@ -489,14 +518,24 @@ AddDefaultCharset utf-8
 ##############################################################
 
 <IfModule mod_rewrite.c>
+
 	RewriteEngine On
-	RewriteCond %{REQUEST_FILENAME} (boot.ini|htaccess.txt|readme.html|install.mysql)$ [NC,OR]
-	RewriteCond %{QUERY_STRING} (boot.ini|htaccess.txt|readme.html|install.mysql).*$ [NC,OR]
+	#Block fingerprint : &tp=1 or &tmpl=offline ...
+	RewriteCond %{QUERY_STRING} (^|&)tmpl=(system|offline) [NC]
+	RewriteRule .* - [L]
+	RewriteCond %{QUERY_STRING} (^|&)tp= [NC]
+	RewriteRule .* - [F]
+
+	RewriteEngine On
+	RewriteCond %{REQUEST_FILENAME} (boot.ini|htaccess.txt|install.mysql)$ [NC,OR]
+	RewriteCond %{QUERY_STRING} (boot.ini|htaccess.txt|install.mysql).*$ [NC,OR]
 	RewriteCond %{REQUEST_FILENAME} (install.pgsql|install.sql|php.ini|phpinfo.php)$ [NC,OR]
 	RewriteCond %{QUERY_STRING} (install.pgsql|install.sql|php.ini|phpinfo.php).*$ [NC,OR]
 	RewriteCond %{REQUEST_FILENAME} (htaccess_bak|error_logs|access_logs)$ [NC,OR]
 	RewriteCond %{QUERY_STRING} (htaccess_bak|error_logs|access_logs).*$ [NC,OR]
 	RewriteCond %{REQUEST_FILENAME} (web.config.txt|web.config)$ [NC,OR]
+	RewriteCond %{QUERY_STRING} (configuration.php|LICENSE.txt|README.txt).*$ [NC,OR] #special joomla (production mode)
+	RewriteCond %{REQUEST_FILENAME} (configuration.php|LICENSE.txt|README.txt)$ [NC,OR] #special joomla (production mode)
 	RewriteCond %{QUERY_STRING} (web.config.txt|web.config).*$
 	RewriteCond %{SCRIPT_FILENAME} -f
 	RewriteRule .* /error/block-files.html [L]	
@@ -504,8 +543,7 @@ AddDefaultCharset utf-8
 	RewriteEngine On
 	RewriteCond %{REQUEST_FILENAME} .*\.(phtm?l?|ash?x|aspx?|cfml?|cgi|pl|jsp|sql|bat)$ [NC,OR]
 	RewriteCond %{REQUEST_FILENAME} .*\.(bak|config|dll|exe|sql|ini|log|sh|inc|dist)$ [NC,OR]
-	RewriteCond %{REQUEST_FILENAME} .*\.(htaccess|htaccess_old|htpasswd|htaccess_bak|error_logs|access_logs)$ [NC]
-	RewriteCond %{REQUEST_FILENAME} .*\.(error_log|access_log|debug_log)$ [NC]
+	RewriteCond %{REQUEST_FILENAME} .*\.(htaccess|htaccess_old|htpasswd|htaccess_bak|error_logs)$ [NC]
 	RewriteCond %{SCRIPT_FILENAME} -f
 	RewriteRule .* /error/block-files.html [L]	
 	
@@ -532,11 +570,11 @@ AddDefaultCharset utf-8
 	RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR] 
 	RewriteCond %{QUERY_STRING} ((java)?script:).*(;).* [NC,OR]   
 	RewriteCond %{QUERY_STRING} .*(\&lt;script).* [NC] 
-	RewriteRule .* - [F]
+	RewriteRule .* - [F]	
 	
 	RewriteEngine On	
-	#RewriteCond %{REQUEST_METHOD} (GET|POST) [NC] #if/isset/_GET = bug error 403
-	RewriteCond %{QUERY_STRING} (globals|encode|localhost|loopback|127\.0\.0\.1) [NC,OR]
+	RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
+	RewriteCond %{QUERY_STRING} (globals|encode|localhost|loopback|127\.0\.0\.1) [NC,OR]	
 	RewriteRule .* - [F]	
 
 	RewriteEngine On
@@ -563,25 +601,27 @@ AddDefaultCharset utf-8
 	RewriteCond %{QUERY_STRING} ^.*(%20)?([(])?(union|select|insert|cast|declare|group_concat|drop|update|md5|benchmark)%20.* [NC,OR] 
 	RewriteCond %{QUERY_STRING} ^.*(%20|\+)(AND|OR)(%20|\+).* [NC,OR] 
 	RewriteCond %{QUERY_STRING} ^.*(%20|\+)ORDER(%20|\+).* [NC,OR] 
-	RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
-	RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
-	RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC,OR]
 	RewriteCond %{QUERY_STRING} ^.*%201\=1.* [NC] 
 	#RewriteRule .* /joomla/aesecure/accessdenied.php?s=682 [L] # why add this
-	RewriteCond %{QUERY_STRING} .*wp_.*  [NC] #default prefix of Wordpress is not automate generator prefix
-	#RewriteCond %{QUERY_STRING} .*prefixsql_.*  [NC]
+	RewriteCond %{QUERY_STRING} .*jos_.*  [NC]
+	#RewriteCond %{QUERY_STRING} .*prefixsql_.*  [NC] #add your own prefix
 	RewriteRule .* /error/sql-injection.html [L]
  
 	RewriteEngine On	
 	RewriteCond %{QUERY_STRING} ^.*(<|>|'|%0A|%0D|%25|%27|%3C|%3E|%00).* [NC,OR]
-	RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|drop|delete|update|cast|create|char|convert|alter|declare|order|script|set|md5|benchmark|encode) [NC,OR]
 	RewriteCond %{QUERY_STRING} ^.*((\/\*)?\*\/).* [NC,OR]
 	RewriteCond %{QUERY_STRING} ^.*\|\|.* [NC]
+	RewriteCond %{QUERY_STRING} !option=com_akeeba(.*)$ [NC]   # exception for Akeeba backup
 	#RewriteRule .* /error/query-string.html [L]
 	RewriteCond %{QUERY_STRING} ^.*string\.fromcharcode.* [NC]
 	RewriteRule .* /error/query-string.html [L]
+
+	RewriteEngine On
+	# Don't allow access to the registration native url.  This url is used by robots to create ghosts users
+	# Block f.i. http://yoursite/index.php?option=com_users&view=registration
+	RewriteCond %{QUERY_STRING} option=com_users&view=registration [NC]
+	RewriteRule .* /error/create-ghosts-users.html [L]
 	
-	RewriteEngine On	
 	RewriteCond %{REQUEST_URI} .*((php|my)?shell|remview.*|phpremoteview.*|sshphp.*|pcom|nstview.*|c99|r57|webadmin.*|phpget.*|phpwriter.*|fileditor.*|locus7.*|storm7.*)\.(p?s?x?htm?l?|txt|aspx?|cfml?|cgi|pl|php[3-9]{0,1}|jsp?|sql|xml) [NC,OR]
 	RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
 	RewriteCond %{QUERY_STRING} ^(.*)([-_a-z]{1,15})=(chmod|chdir|mkdir|rmdir|clear|whoami|uname|unzip|gunzip|grep|umask|telnet|ssh|ftp|mkmode|logname|edit_file|search_text|find_text|php_eval|download_file|ftp_file_down|ftp_file_up|ftp_brute|mail_file|mysql_dump|mysqli_dump_debug_info|db_query)([^a-zA-Z0-9].+)*$ [OR]
@@ -599,7 +639,33 @@ AddDefaultCharset utf-8
 	RewriteCond %{QUERY_STRING} .*(((\/|%2F)\.\.)+).* [OR]
 	RewriteCond %{QUERY_STRING} ^(.*)*proc\/self\/environ* [NC]
 	RewriteRule .* /error/filter-shell.html [L]	
+	
+	RewriteEngine On	
+	# Browsers trying to access to the site favicon from a bad locations...  This will generate 404 pages
+	# and entries in logfiles; avoid this. Redirect to the good file
+	#--- Commented because need to first verify if the querystring points to favicon or not.
+	#--- need to verify too the existence of the /templates/favicon.ico file first
+	#RewriteCond %{REQUEST_URI} !^/favicon\.ico [NC]
+	#RewriteCond %{REQUEST_URI} favicon\.ico    [NC]
+	#RewriteRule (.*) http://%{HTTP_HOST}/templates/favicon.ico [R=301,L]
 
+	RewriteEngine On
+	# Joomla! core SEF Section
+	# Workaround for HTTP authorization in CGI environment
+	 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+	# If the requested path and file is not /index.php and the request
+	# has not already been internally rewritten to the index.php script
+	RewriteCond %{REQUEST_URI} !^/index\.php
+	# and the request is for something within the component folder,
+	# or for the site root, or for an extensionless URL, or the
+	# requested URL ends with one of the listed extensions
+	RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|vcf|raw))$ [NC]
+	# Never rewrite for existing files, directories and links
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-l
+	# internally rewrite the request to the index.php script
+	RewriteRule .* index.php [L]
 </IfModule>
 
 # Badbots, spam and aspirator
@@ -641,6 +707,84 @@ AddDefaultCharset utf-8
 </IfModule>
 
 
+##
+# @package    Joomla
+# @copyright  Copyright (C) 2005 - 2016 Open Source Matters. All rights reserved.
+# @license    GNU General Public License version 2 or later; see LICENSE.txt
+##
+
+##
+# READ THIS COMPLETELY IF YOU CHOOSE TO USE THIS FILE!
+#
+# The line just below this section: 'Options +FollowSymLinks' may cause problems
+# with some server configurations.  It is required for use of mod_rewrite, but may already
+# be set by your server administrator in a way that disallows changing it in
+# your .htaccess file.  If using it causes your server to error out, comment it out (add # to
+# beginning of line), reload your site in your browser and test your sef url's.  If they work,
+# it has been set by your server administrator and you do not need it set here.
+##
+
+## No directory listings
+IndexIgnore *
+
+## Can be commented out if causes errors, see notes above.
+Options +FollowSymlinks
+Options -Indexes
+
+## Mod_rewrite in use.
+
+RewriteEngine On
+
+## Begin - Rewrite rules to block out some common exploits.
+# If you experience problems on your site block out the operations listed below
+# This attempts to block the most common type of exploit `attempts` to Joomla!
+#
+# Block out any script trying to base64_encode data within the URL.
+#RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
+# Block out any script that includes a <script> tag in URL.
+#RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+# Block out any script trying to set a PHP GLOBALS variable via URL.
+#RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+# Block out any script trying to modify a _REQUEST variable via URL.
+#RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+# Return 403 Forbidden header and show the content of the root homepage
+#RewriteRule .* index.php [F]
+#
+## End - Rewrite rules to block out some common exploits.
+
+## Begin - Custom redirects
+#
+# If you need to redirect some pages, or set a canonical non-www to
+# www redirect (or vice versa), place that code here. Ensure those
+# redirects use the correct RewriteRule syntax and the [R=301,L] flags.
+#
+## End - Custom redirects
+
+##
+# Uncomment following line if your webserver's URL
+# is not directly related to physical file paths.
+# Update Your Joomla! Directory (just / for root).
+##
+
+# RewriteBase /
+
+## Begin - Joomla! core SEF Section.
+#
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+#
+# If the requested path and file is not /index.php and the request
+# has not already been internally rewritten to the index.php script
+RewriteCond %{REQUEST_URI} !^/index\.php
+# and the requested path and file doesn't directly match a physical file
+RewriteCond %{REQUEST_FILENAME} !-f
+# and the requested path and file doesn't directly match a physical folder
+RewriteCond %{REQUEST_FILENAME} !-d
+# internally rewrite the request to the index.php script
+RewriteRule .* index.php [L]
+#
+## End - Joomla! core SEF Section.
+
+
 ##############################################################
 #
 #		Source from Bulletproof security & All In One|Wordpress - free version
@@ -675,68 +819,21 @@ AddDefaultCharset utf-8
 	RewriteCond %{REQUEST_METHOD} ^(connect|debug|delete|move|put|trace|track) [NC]
 	RewriteRule .* - [F]	
 
-<FilesMatch "^(wp-login\.php|xmlrpc\.php|wp-config\.php|wp-cron\.php|wp-trackback\.php|wp-signup\.php)">
-	Order Allow,Deny
-	#Allow from www.exemple.tld
-	#Allow from x.x.x.x
-	#Allow from x.x.x.x
-	#Allow from x.x.x.x
-	Deny from all
-</FilesMatch>
+#<FilesMatch "^(configuration\.php)">
+#	Order Allow,Deny
+#	#Allow from www.exemple.tld
+#	#Allow from x.x.x.x
+#	#Allow from x.x.x.x
+#	#Allow from x.x.x.x
+#	Deny from all
+#</FilesMatch>
 
 #Not sure this config
-<Files "^(.htaccess|wp-config.php|xmlrpc.php|debug.log)">
-	Order Allow,Deny
-	Deny from all
-	#Satisfy all	#if you had bug add this or separeted variable Files
-</Files>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# BEGIN WordPress
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-</IfModule>
-# END WordPress
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#<Files "^(.htaccess|configuration.php|debug.log)">
+#	Order Allow,Deny
+#	Deny from all
+#	#Satisfy all	#if you had bug add this or separeted variable Files
+#</Files>
 
 
 
