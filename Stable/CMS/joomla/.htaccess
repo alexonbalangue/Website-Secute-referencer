@@ -59,6 +59,11 @@ RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 	ErrorDocument 504 /error/504.html
 	ErrorDocument 506 /error/506.html
 
+#Fault security HTTP_PROXY
+<IfModule mod_headers.c>
+   RequestHeader unset Proxy
+</IfModule>
+#  RequestHeader unset Proxy early
 ##########################################################################################
 #				BEGIN - IF you need
 #########################################################################################

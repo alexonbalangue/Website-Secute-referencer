@@ -89,6 +89,11 @@ RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 #				END - if you need
 ##########################################################################################
 	
+#Fault security HTTP_PROXY
+<IfModule mod_headers.c>
+   RequestHeader unset Proxy
+</IfModule>
+#  RequestHeader unset Proxy early
 
 #Generator from Cpanel and edit that later using sinces 2009 years ago - and ameliorate.
 <IfModule mod_rewrite.c>

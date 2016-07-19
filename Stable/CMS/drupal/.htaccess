@@ -59,6 +59,11 @@ RewriteRule ^error/hotlinking\.html$ blocker/images.php?copyright [L]
 	ErrorDocument 504 /error/504.html
 	ErrorDocument 506 /error/506.html
 
+#Fault security HTTP_PROXY
+<IfModule mod_headers.c>
+   RequestHeader unset Proxy
+</IfModule>
+#  RequestHeader unset Proxy early
 
 #Generator from Cpanel and edit that later using sinces 2009 years ago - and ameliorate.
 <IfModule mod_rewrite.c>
