@@ -7,6 +7,6 @@ define('__JQUERYVERSION__', '1.12.4');
 //Default domaine name (=ip dedicated/shared)
 $my_domainname = 'www.alexonbalangue.me';
 
-$amp = 'no'; #yes (amp=require HTTPS) or no not show
+$amp = 'yes'; #yes (amp=require HTTPS) or no not show
 
 ?>
