@@ -171,8 +171,8 @@ Options -MultiViews
     # </FilesMatch>
 
 # Force client-side SSL redirection. (HTTP Strict Transport Security (HSTS))
- #    Header always set Strict-Transport-Security "max-age=16070400; includeSubDomains; preload" #HTTPS support only wildcard domaine name (eg: *.exemple.tld)
-#     Header always set Strict-Transport-Security "max-age=16070400; preload" #HTTPS support only simple domaine name (eg: www.exemple.tld and/or exemple.tld)
+ #    Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains; preload" #HTTPS support only wildcard domaine name (eg: *.exemple.tld)
+#     Header always set Strict-Transport-Security "max-age=15552000; preload" #HTTPS support only simple domaine name (eg: www.exemple.tld and/or exemple.tld)
 
 # Prevent some browsers from MIME-sniffing the response.
     Header set X-Content-Type-Options "nosniff"
